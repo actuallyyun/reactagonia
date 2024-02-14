@@ -1,4 +1,3 @@
-import { UseSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
 import { AppState } from '../../app/store'
@@ -14,9 +13,18 @@ export default function SingleProductPage() {
     (state: AppState) => state.products.selectedProduct
   )
 
+  const { productId } = useParams()
+  const dispath = useDispatch()
+  dispath(getProductById(Number(productId)))
+
+  const product = useSelector(
+    (state: AppState) => state.products.selectedProduct
+  )
+
   return (
     <>
       <p>single product page</p>
+      {!product && <p>The product you are looking for does not exist.</p>}
       {product && <p>{product.id}</p>}
     </>
   )
