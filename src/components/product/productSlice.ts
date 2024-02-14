@@ -1,4 +1,9 @@
-import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
+import {
+  createSlice,
+  PayloadAction,
+  createAsyncThunk,
+  Action
+} from '@reduxjs/toolkit'
 import { Product } from '../../misc/type'
 import axios from 'axios'
 import { AppState } from '../../app/store'
@@ -22,19 +27,33 @@ export type InitialState = {
   products: Product[]
   status: 'idle' | 'loading' | 'succeeded' | 'failed'
   error: Error | null
+  selectedProduct: Product | null
 }
 
 const initialState: InitialState = {
   products: [],
   status: 'idle',
-  error: null
+  error: null,
+  selectedProduct: null
 }
 
 export const productSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {
-    findById: (state, action: PayloadAction<number>) => {},
+    getProductById: (state, action: PayloadAction<number>) => {
+      const product = state.products.find(
+        (product) => product.id === action.payload
+      )
+      if (product) {
+        return {
+          ...state,
+          selectedProduct: product
+        }
+      } else {
+        return state
+      }
+    },
     filterByCategory: (state, action: PayloadAction<string>) => {},
     sortByPrice: (state, action: PayloadAction<number>) => {}
   },
@@ -67,5 +86,6 @@ export const productSlice = createSlice({
 })
 
 export const productReducer = productSlice.reducer
-export const { findById, filterByCategory, sortByPrice } = productSlice.actions
+export const { getProductById, filterByCategory, sortByPrice } =
+  productSlice.actions
 export const selectAllProducts = (state: AppState) => state.products.products

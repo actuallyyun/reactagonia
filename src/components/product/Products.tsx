@@ -1,11 +1,8 @@
-import { UseSelector } from 'react-redux'
-import { createAsyncThunk } from '@reduxjs/toolkit'
-import axios from 'axios'
-
 import { useAppDispatch, AppState } from '../../app/store'
 import { useSelector } from 'react-redux'
 import { fetchProducts, selectAllProducts } from './productSlice'
 import { useEffect } from 'react'
+import { Link } from 'react-router-dom'
 
 const FAKE_STORE_URL = 'https://api.escuelajs.co/api/v1/products'
 
@@ -20,10 +17,17 @@ export default function Products() {
     }
   }, [productStatus, dispatch])
 
-  console.log({ products })
   return (
     <>
-      <p>products</p>
+      {products.map((product) => {
+        return (
+          <div>
+            <Link to={`/product/${product.id}`}>
+              <h1>{product.title}</h1>
+            </Link>
+          </div>
+        )
+      })}
     </>
   )
 }
