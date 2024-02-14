@@ -76,8 +76,25 @@ export const productSlice = createSlice({
         return state
       }
     },
-    filterByCategory: (state, action: PayloadAction<string>) => {},
-    sortByPrice: (state, action: PayloadAction<number>) => {}
+    sortByPrice: (state, action: PayloadAction<string>) => {
+      const method = action.payload
+      let sortedProducts: Product[] = []
+      if (method === 'ascending') {
+        sortedProducts = state.products.sort((a, b) => a.price - b.price)
+      }
+      if (method === 'descending') {
+        sortedProducts = state.products.sort((a, b) => b.price - a.price)
+      }
+      if (method === 'newest') {
+        sortedProducts = state.products.sort(
+          (a, b) => Date.parse(a.creationAt) - Date.parse(b.creationAt)
+        )
+      }
+      if (method === 'default') {
+        sortedProducts = state.products.sort((a, b) => a.id - b.id)
+      }
+      state.products = sortedProducts
+    }
   },
   extraReducers(builder) {
     builder.addCase(fetchProducts.fulfilled, (state, action) => {
@@ -136,8 +153,7 @@ export const productSlice = createSlice({
 })
 
 export const productReducer = productSlice.reducer
-export const { getProductById, filterByCategory, sortByPrice } =
-  productSlice.actions
+export const { getProductById, sortByPrice } = productSlice.actions
 export const selectAllProducts = (state: AppState) => state.products.products
 
   

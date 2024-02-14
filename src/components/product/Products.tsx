@@ -23,7 +23,9 @@ export default function Products() {
         return (
           <div>
             <Link to={`/product/${product.id}`}>
-              <h1>{product.title}</h1>
+              <h1>
+                {product.title} price:${product.price}
+              </h1>
             </Link>
           </div>
         )

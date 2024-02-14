@@ -16,7 +16,7 @@ export default function SingleProductPage() {
   return (
     <>
       <p>single product page</p>
-      {!product && <p>The product you are looking for does not exist.</p>}
+      {!product && <p>The product you are looking for does not exist.</p>}g{' '}
       {product && <p>{product.id}</p>}
     </>
   )
