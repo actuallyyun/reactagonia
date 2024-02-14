@@ -13,14 +13,6 @@ export default function SingleProductPage() {
     (state: AppState) => state.products.selectedProduct
   )
 
-  const { productId } = useParams()
-  const dispath = useDispatch()
-  dispath(getProductById(Number(productId)))
-
-  const product = useSelector(
-    (state: AppState) => state.products.selectedProduct
-  )
-
   return (
     <>
       <p>single product page</p>

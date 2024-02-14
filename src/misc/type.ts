@@ -1,3 +1,11 @@
+export type Category = {
+  id: number
+  name: string
+  image: string
+  creationAt: string
+  updatedAt: string
+}
+
 export type Product = {
   id: number
   title: string
@@ -6,11 +14,5 @@ export type Product = {
   images: string[]
   creationAt: string
   updatedAt: string
-  category: {
-    id: number
-    name: string
-    image: string
-    creationAt: string
-    updatedAt: string
-  }
+  category: Category
 }

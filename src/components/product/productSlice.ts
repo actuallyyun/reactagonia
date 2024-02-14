@@ -4,12 +4,28 @@ import {
   createAsyncThunk,
   Action
 } from '@reduxjs/toolkit'
-import { Product } from '../../misc/type'
+import { Product, Category } from '../../misc/type'
 import axios from 'axios'
 import { AppState } from '../../app/store'
+import { getUniqueValues, getCategories } from '../../misc/utils'
 
 export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
+  async (url: string) => {
+    try {
+      const response = await axios.get(url)
+      if (response.status === 200) {
+        return response.data
+      }
+    } catch (err) {
+      const error = err as Error
+      return error
+    }
+  }
+)
+
+export const fetchProductByCategory = createAsyncThunk(
+  'products/fetchProductByCategory',
   async (url: string) => {
     try {
       const response = await axios.get(url)
@@ -28,13 +44,19 @@ export type InitialState = {
   status: 'idle' | 'loading' | 'succeeded' | 'failed'
   error: Error | null
   selectedProduct: Product | null
+  categories: {
+    id: number
+    name: string
+    image: string
+  }[]
 }
 
 const initialState: InitialState = {
   products: [],
   status: 'idle',
   error: null,
-  selectedProduct: null
+  selectedProduct: null,
+  categories: []
 }
 
 export const productSlice = createSlice({
@@ -60,10 +82,14 @@ export const productSlice = createSlice({
   extraReducers(builder) {
     builder.addCase(fetchProducts.fulfilled, (state, action) => {
       if (!(action.payload instanceof Error)) {
+        const categories = getUniqueValues(
+          getCategories(action.payload)
+        ) as Category[]
         return {
           ...state,
           products: action.payload,
-          status: 'succeeded'
+          status: 'succeeded',
+          categories: categories
         }
       }
     })
@@ -82,6 +108,30 @@ export const productSlice = createSlice({
         }
       }
     })
+    builder.addCase(fetchProductByCategory.fulfilled, (state, action) => {
+      if (!(action.payload instanceof Error)) {
+        return {
+          ...state,
+          products: action.payload,
+          status: 'succeeded'
+        }
+      }
+    })
+    builder.addCase(fetchProductByCategory.pending, (state) => {
+      return {
+        ...state,
+        status: 'loading'
+      }
+    })
+    builder.addCase(fetchProductByCategory.rejected, (state, action) => {
+      if (action.payload instanceof Error) {
+        return {
+          ...state,
+          status: 'failed',
+          error: action.payload
+        }
+      }
+    })
   }
 })
 
@@ -89,3 +139,5 @@ export const productReducer = productSlice.reducer
 export const { getProductById, filterByCategory, sortByPrice } =
   productSlice.actions
 export const selectAllProducts = (state: AppState) => state.products.products
+
+  

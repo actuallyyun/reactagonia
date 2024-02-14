@@ -4,7 +4,7 @@ import { fetchProducts, selectAllProducts } from './productSlice'
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
-const FAKE_STORE_URL = 'https://api.escuelajs.co/api/v1/products'
+export const FAKE_STORE_API = 'https://api.escuelajs.co/api/v1'
 
 export default function Products() {
   const dispatch = useAppDispatch()
@@ -13,7 +13,7 @@ export default function Products() {
 
   useEffect(() => {
     if (productStatus === 'idle') {
-      dispatch(fetchProducts(FAKE_STORE_URL))
+      dispatch(fetchProducts(`${FAKE_STORE_API}/products`))
     }
   }, [productStatus, dispatch])
 
