@@ -1,9 +1,14 @@
 import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 import { fetchProductByCategory } from '../product/productSlice'
 import { useAppDispatch, AppState } from '../../app/store'
 import { FAKE_STORE_API } from '../product/Products'
-import { useGetCategoriesQuery } from '../../services/fakeStore'
+import {
+  useGetCategoriesQuery,
+  useGetProductsByCategoryQuery
+} from '../../services/fakeStore'
+import { useEffect } from 'react'
 
 export default function CategoryList() {
   const { data, error, isLoading } = useGetCategoriesQuery()
@@ -21,12 +26,11 @@ export default function CategoryList() {
       )
     )
   }
+
   return (
     <div>
       {categories &&
-        categories.map((c) => (
-          <button onClick={() => handleClick(c.id)}>{c.name}</button>
-        ))}
+        categories.map((c) => <Link to={`/category/${c.id}`}>{c.name}</Link>)}
     </div>
   )
 }
