@@ -1,10 +1,10 @@
 import { Product } from './type'
 
-export const getUniqueValues = (array: object[]) =>
-  array
-    .map((e) => JSON.stringify(e))
-    .filter((currentValue, index, arr) => arr.indexOf(currentValue) === index)
-    .map((e) => JSON.parse(e))
+//export const getUniqueValues = (array: object[]) =>
+//  array
+//    .map((e) => JSON.stringify(e))
+//    .filter((currentValue, index, arr) => arr.indexOf(currentValue) === index)
+//    .map((e) => JSON.parse(e))
 
 //  unique = [...new Set(list.map((o) => JSON.stringify(o)))].map((s) =>
 //  JSON.parse(s)

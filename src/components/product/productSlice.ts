@@ -7,7 +7,6 @@ import {
 import { Product, Category } from '../../misc/type'
 import axios from 'axios'
 import { AppState } from '../../app/store'
-import { getUniqueValues, getCategories } from '../../misc/utils'
 
 export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
@@ -44,19 +43,13 @@ export type InitialState = {
   status: 'idle' | 'loading' | 'succeeded' | 'failed'
   error: Error | null
   selectedProduct: Product | null
-  categories: {
-    id: number
-    name: string
-    image: string
-  }[]
 }
 
 const initialState: InitialState = {
   products: [],
   status: 'idle',
   error: null,
-  selectedProduct: null,
-  categories: []
+  selectedProduct: null
 }
 
 export const productSlice = createSlice({
@@ -99,14 +92,10 @@ export const productSlice = createSlice({
   extraReducers(builder) {
     builder.addCase(fetchProducts.fulfilled, (state, action) => {
       if (!(action.payload instanceof Error)) {
-        const categories = getUniqueValues(
-          getCategories(action.payload)
-        ) as Category[]
         return {
           ...state,
           products: action.payload,
-          status: 'succeeded',
-          categories: categories
+          status: 'succeeded'
         }
       }
     })
