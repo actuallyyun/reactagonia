@@ -5,20 +5,23 @@ import {
   Action
 } from '@reduxjs/toolkit'
 import { Product, Category } from '../../misc/type'
-import axios from 'axios'
+import axios, { AxiosError, ValidationErrors } from 'axios'
 import { AppState } from '../../app/store'
 
 export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
-  async (url: string) => {
+  async (url: string, { rejectWithValue }) => {
     try {
       const response = await axios.get(url)
       if (response.status === 200) {
         return response.data
       }
     } catch (err) {
-      const error = err as Error
-      return error
+      let error: AxiosError<ValidationErrors> = err
+      if (!error.response) {
+        throw err
+      }
+      return rejectWithValue(error.response.data)
     }
   }
 )
@@ -41,7 +44,7 @@ export const fetchProductByCategory = createAsyncThunk(
 export type InitialState = {
   products: Product[]
   status: 'idle' | 'loading' | 'succeeded' | 'failed'
-  error: Error | null
+  error: string | null
   selectedProduct: Product | null
 }
 
@@ -106,14 +109,21 @@ export const productSlice = createSlice({
       }
     })
     builder.addCase(fetchProducts.rejected, (state, action) => {
-      if (action.payload instanceof Error) {
+      if (action.payload) {
         return {
           ...state,
           status: 'failed',
-          error: action.payload
+          error: action.payload.errorMessage
+        }
+      } else {
+        return {
+          ...state,
+          status: 'failed',
+          error: action.error.message
         }
       }
     })
+
     builder.addCase(fetchProductByCategory.fulfilled, (state, action) => {
       if (!(action.payload instanceof Error)) {
         return {
