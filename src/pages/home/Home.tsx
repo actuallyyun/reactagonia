@@ -1,5 +1,5 @@
 import Products from '../../components/product/Products'
-import CategoryList from '../../components/category/CateroryList'
+import CategoryList from '../../components/category/CategoryList'
 import SortByPrice from '../../components/SortByPrice'
 
 export default function Home() {
