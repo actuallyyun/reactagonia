@@ -1,6 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { Category, Product } from '../misc/type'
 
+
+
 const fakeStoreApi = createApi({
   reducerPath: 'fakeStoreApi',
   baseQuery: fetchBaseQuery({ baseUrl: 'https://api.escuelajs.co/api/v1' }),

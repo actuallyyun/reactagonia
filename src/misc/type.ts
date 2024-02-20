@@ -16,3 +16,25 @@ export type Product = {
   updatedAt: string
   category: Category
 }
+
+export type UserRegister = {
+  name: string
+  email: string
+  password: string
+  avatar: string
+}
+
+export type User = UserRegister & {
+  role: 'customer' | 'admin'
+  id: number
+}
+
+export type UserAuthToken = {
+  access_token: string
+  refresh_token: string
+}
+
+export type UserLoginRequest = {
+  email: string
+  password: string
+}

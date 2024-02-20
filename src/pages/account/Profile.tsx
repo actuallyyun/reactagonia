@@ -1,9 +1,9 @@
-import CreateProductForm from '../../components/product/CreateProductForm'
+import UserLoginForm from '../../components/user/UserRegisterForm'
 
 export default function Profile() {
   return (
     <>
-      <CreateProductForm />
+      <UserLoginForm />
       <p>profile</p>
     </>
   )

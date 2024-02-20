@@ -4,6 +4,8 @@ import { useDispatch } from 'react-redux'
 import { productReducer } from '../components/product/productSlice'
 import fakeStoreApi from '../services/fakeStore'
 import { categoryReducer } from '../components/category/categorySlice'
+import userReducer from '../components/user/userSlice'
+import { authApi } from '../services/auth'
 
 // store all states
 const store = configureStore({
@@ -11,10 +13,14 @@ const store = configureStore({
     // counterReducer
     products: productReducer,
     category: categoryReducer,
-    [fakeStoreApi.reducerPath]: fakeStoreApi.reducer
+    user: userReducer,
+    [fakeStoreApi.reducerPath]: fakeStoreApi.reducer,
+    [authApi.reducerPath]: authApi.reducer
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(fakeStoreApi.middleware)
+    getDefaultMiddleware()
+      .concat(fakeStoreApi.middleware)
+      .concat(authApi.middleware)
 })
 
 export type AppState = ReturnType<typeof store.getState>
