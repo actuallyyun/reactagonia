@@ -1,45 +1,37 @@
-import {
-  createSlice,
-  PayloadAction,
-  createAsyncThunk,
-  Action
-} from '@reduxjs/toolkit'
-import { Product, Category } from '../../misc/type'
-import axios, { AxiosError, ValidationErrors } from 'axios'
+import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
+import { Product } from '../../misc/type'
+import axios from 'axios'
+
 import { AppState } from '../../app/store'
 
-export const fetchProducts = createAsyncThunk(
-  'products/fetchProducts',
-  async (url: string, { rejectWithValue }) => {
-    try {
-      const response = await axios.get(url)
-      if (response.status === 200) {
-        return response.data
-      }
-    } catch (err) {
-      let error: AxiosError<ValidationErrors> = err
-      if (!error.response) {
-        throw err
-      }
-      return rejectWithValue(error.response.data)
-    }
-  }
-)
+//export const fetchProducts = createAsyncThunk(
+//  'products/fetchProducts',
+//  async (url: string, { rejectWithValue }) => {
+//    try {
+//      const response = await axios.get(url)
+//      if (response.status === 200) {
+//        return response.data
+//      }
+//    } catch (err) {
+//      return rejectWithValue(err.response.data)
+//    }
+//  }
+//)
 
-export const fetchProductByCategory = createAsyncThunk(
-  'products/fetchProductByCategory',
-  async (url: string) => {
-    try {
-      const response = await axios.get(url)
-      if (response.status === 200) {
-        return response.data
-      }
-    } catch (err) {
-      const error = err as Error
-      return error
-    }
-  }
-)
+//export const fetchProductByCategory = createAsyncThunk(
+//  'products/fetchProductByCategory',
+//  async (url: string) => {
+//    try {
+//      const response = await axios.get(url)
+//      if (response.status === 200) {
+//        return response.data
+//      }
+//    } catch (err) {
+//      const error = err as Error
+//      return error
+//    }
+//  }
+//)
 
 export type InitialState = {
   products: Product[]
@@ -91,68 +83,66 @@ export const productSlice = createSlice({
       }
       state.products = sortedProducts
     }
-  },
-  extraReducers(builder) {
-    builder.addCase(fetchProducts.fulfilled, (state, action) => {
-      if (!(action.payload instanceof Error)) {
-        return {
-          ...state,
-          products: action.payload,
-          status: 'succeeded'
-        }
-      }
-    })
-    builder.addCase(fetchProducts.pending, (state, action) => {
-      return {
-        ...state,
-        status: 'loading'
-      }
-    })
-    builder.addCase(fetchProducts.rejected, (state, action) => {
-      if (action.payload) {
-        return {
-          ...state,
-          status: 'failed',
-          error: action.payload.errorMessage
-        }
-      } else {
-        return {
-          ...state,
-          status: 'failed',
-          error: action.error.message
-        }
-      }
-    })
-
-    builder.addCase(fetchProductByCategory.fulfilled, (state, action) => {
-      if (!(action.payload instanceof Error)) {
-        return {
-          ...state,
-          products: action.payload,
-          status: 'succeeded'
-        }
-      }
-    })
-    builder.addCase(fetchProductByCategory.pending, (state) => {
-      return {
-        ...state,
-        status: 'loading'
-      }
-    })
-    builder.addCase(fetchProductByCategory.rejected, (state, action) => {
-      if (action.payload instanceof Error) {
-        return {
-          ...state,
-          status: 'failed',
-          error: action.payload
-        }
-      }
-    })
   }
+  //extraReducers(builder) {
+  //  builder.addCase(useGetAllProductsQuery.fulfilled, (state, action) => {
+  //    if (!(action.payload instanceof Error)) {
+  //      return {
+  //        ...state,
+  //        products: action.payload,
+  //        status: 'succeeded'
+  //      }
+  //    }
+  //  })
+  //  builder.addCase(fetchProducts.pending, (state, action) => {
+  //    return {
+  //      ...state,
+  //      status: 'loading'
+  //    }
+  //  })
+  //  builder.addCase(fetchProducts.rejected, (state, action) => {
+  //    if (action.payload) {
+  //      return {
+  //        ...state,
+  //        status: 'failed',
+  //        error: action.payload.errorMessage
+  //      }
+  //    } else {
+  //      return {
+  //        ...state,
+  //        status: 'failed',
+  //        error: action.error.message
+  //      }
+  //    }
+  //  })
+
+  //  builder.addCase(fetchProductByCategory.fulfilled, (state, action) => {
+  //    if (!(action.payload instanceof Error)) {
+  //      return {
+  //        ...state,
+  //        products: action.payload,
+  //        status: 'succeeded'
+  //      }
+  //    }
+  //  })
+  //  builder.addCase(fetchProductByCategory.pending, (state) => {
+  //    return {
+  //      ...state,
+  //      status: 'loading'
+  //    }
+  //  })
+  //  builder.addCase(fetchProductByCategory.rejected, (state, action) => {
+  //    if (action.payload instanceof Error) {
+  //      return {
+  //        ...state,
+  //        status: 'failed',
+  //        error: action.payload
+  //      }
+  //    }
+  //  })
+  //}
 })
 
 export const productReducer = productSlice.reducer
 export const { getProductById, sortByPrice } = productSlice.actions
 export const selectAllProducts = (state: AppState) => state.products.products
-
-  

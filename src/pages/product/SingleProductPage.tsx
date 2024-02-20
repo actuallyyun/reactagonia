@@ -1,23 +1,21 @@
 import { useParams } from 'react-router-dom'
 
-import { AppState } from '../../app/store'
-import { useSelector, useDispatch } from 'react-redux'
-import { getProductById } from '../../components/product/productSlice'
+import { useGetSingleProductQuery } from '../../services/fakeStore'
 
 export default function SingleProductPage() {
   const { productId } = useParams()
-  const dispath = useDispatch()
-  dispath(getProductById(Number(productId)))
 
-  const product = useSelector(
-    (state: AppState) => state.products.selectedProduct
-  )
+  const { data, error, isLoading } = useGetSingleProductQuery(Number(productId))
 
   return (
     <>
       <p>single product page</p>
-      {!product && <p>The product you are looking for does not exist.</p>}g{' '}
-      {product && <p>{product.id}</p>}
+      {!data && <p>The product you are looking for does not exist.</p>}g{' '}
+      {data && (
+        <p>
+          {data.id} {data.title}
+        </p>
+      )}
     </>
   )
 }

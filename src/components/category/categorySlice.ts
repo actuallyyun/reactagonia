@@ -1,10 +1,4 @@
-import {
-  createSlice,
-  PayloadAction,
-  createAsyncThunk,
-  Action
-} from '@reduxjs/toolkit'
-import { Product, Category } from '../../misc/type'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 type InitialState = {
   sortBy: string
