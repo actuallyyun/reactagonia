@@ -4,7 +4,7 @@ import { Category, Product } from '../misc/type'
 const fakeStoreApi = createApi({
   reducerPath: 'fakeStoreApi',
   baseQuery: fetchBaseQuery({ baseUrl: 'https://api.escuelajs.co/api/v1' }),
-  tagTypes: ['Products'],
+  tagTypes: ['Products', 'Category'],
   endpoints: (builder) => ({
     getAllProducts: builder.query<Product[], void>({
       query: () => ({ url: '/products', method: 'GET' }),
@@ -41,11 +41,35 @@ const fakeStoreApi = createApi({
     getCategories: builder.query<Category[], void>({
       query: () => ({ url: '/categories', method: 'GET' })
     }),
-    getProductsByCategory: builder.query<Product[], number>({
-      query: (categoryId) => ({
+    getProductsByCategory: builder.query({
+      query: ({
+        categoryId,
+        sortBy
+      }: {
+        categoryId: number
+        sortBy: string
+      }) => ({
         url: `/categories/${categoryId}/products`,
         method: 'GET'
-      })
+      }),
+      providesTags: ['Category'],
+      transformResponse: (response: Product[], meta, arg) => {
+        console.log({ response })
+        if (arg.sortBy === 'default') {
+          return response
+        }
+        if (arg.sortBy === 'ascending') {
+          return response.sort((a, b) => a.price - b.price)
+        }
+        if (arg.sortBy === 'descending') {
+          return response.sort((a, b) => b.price - a.price)
+        }
+        if (arg.sortBy === 'newest') {
+          return response.sort(
+            (a, b) => Date.parse(a.creationAt) - Date.parse(b.creationAt)
+          )
+        }
+      }
     })
   })
 })
