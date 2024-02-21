@@ -1,7 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { useDispatch } from 'react-redux'
 
-import { productReducer } from '../components/product/productSlice'
 import fakeStoreApi from '../services/fakeStore'
 import { categoryReducer } from '../components/category/categorySlice'
 import userReducer from '../components/user/userSlice'
@@ -12,7 +11,7 @@ import cartReducer from '../components/cart/cartSlice'
 const store = configureStore({
   reducer: {
     // counterReducer
-    products: productReducer,
+
     category: categoryReducer,
     user: userReducer,
     cart: cartReducer,

@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useNavigate } from 'react-router-dom'
 
-import { CreateProductRequest } from '../../misc/type'
+import { CreateProductInput } from '../../misc/type'
 import {
   useGetCategoriesQuery,
   useCreateProductMutation
@@ -42,7 +42,7 @@ export default function CreateProductForm() {
   } = useForm({
     resolver: yupResolver(createProductSchema)
   })
-  const onSubmit = (data: CreateProductRequest) => {
+  const onSubmit = (data: CreateProductInput) => {
     creatProduct({
       ...data,
       images: defaultImage

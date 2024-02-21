@@ -17,11 +17,15 @@ export type Product = {
   category: Category
 }
 
-export type CreateProductRequest = {
+export type CreateProductInput = {
   title: string
   price: number
   description: string
   categoryId: number
+}
+
+export type CreateProductRequest = CreateProductInput & {
+  images: string[]
 }
 
 export type UserRegister = {

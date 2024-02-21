@@ -1,5 +1,4 @@
 import { Product } from '../../misc/type'
-import { Link } from 'react-router-dom'
 
 import AddToCart from '../cart/AddToCart'
 
