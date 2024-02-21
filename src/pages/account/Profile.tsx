@@ -6,7 +6,6 @@ import CreateProductForm from '../../components/product/CreateProductForm'
 
 export default function Profile() {
   const { data, error } = useGetUserQuery()
-  console.log({ data, error })
   const dispatch = useDispatch()
 
   const handleLogOut = () => {
@@ -22,7 +21,9 @@ export default function Profile() {
           <p>{data.email}</p>
         </div>
       )}
-      <button onClick={handleLogOut}>log out</button>
+      <button onClick={handleLogOut} className='btn-submit'>
+        log out
+      </button>
       <CreateProductForm />
     </>
   )

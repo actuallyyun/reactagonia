@@ -72,8 +72,9 @@ export default function CreateProductForm() {
         <label htmlFor='description'>Des</label>
         <textarea {...register('description')} />
         {errors.description ? <div>{errors.description.message}</div> : null}
-
-        <button type='submit'>Send</button>
+        <button type='submit' className='btn-submit'>
+          Send
+        </button>
       </form>
     </div>
   )
