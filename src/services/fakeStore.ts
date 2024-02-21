@@ -1,12 +1,15 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { Category, Product } from '../misc/type'
-
-
+import {
+  Category,
+  Product,
+  UpdateProductInput,
+  UpdateProductRequest
+} from '../misc/type'
 
 const fakeStoreApi = createApi({
   reducerPath: 'fakeStoreApi',
   baseQuery: fetchBaseQuery({ baseUrl: 'https://api.escuelajs.co/api/v1' }),
-  tagTypes: ['Products', 'Category'],
+  tagTypes: ['Products', 'Product', 'Category'],
   endpoints: (builder) => ({
     getAllProducts: builder.query<Product[], void>({
       query: () => ({ url: '/products', method: 'GET' }),
@@ -16,21 +19,26 @@ const fakeStoreApi = createApi({
       query: (productId) => ({
         url: `/products/${productId}`,
         method: 'GET'
-      })
-    }),
-    updateProduct: builder.mutation<Product, number>({
-      query: (productId) => ({
-        url: `/products/${productId}`,
-        method: 'PUT'
       }),
-      invalidatesTags: [{ type: 'Products' }]
+      providesTags: (result, error, arg) => [{ type: 'Product', id: arg }]
+    }),
+    updateProduct: builder.mutation<Product, UpdateProductRequest>({
+      query: (request) => ({
+        url: `/products/${request.id}`,
+        method: 'PUT',
+        body: {
+          title: request.title,
+          price: request.price
+        }
+      }),
+      invalidatesTags: (result, error, arg) => [{ type: 'Product', id: arg.id }]
     }),
     deleteProduct: builder.mutation<Boolean, number>({
       query: (productId) => ({
         url: `/products/${productId}`,
         method: 'DELETE'
       }),
-      invalidatesTags: [{ type: 'Products' }]
+      invalidatesTags: (result, error, arg) => [{ type: 'Product', id: arg }]
     }),
     createProduct: builder.mutation<Product, Partial<Product>>({
       query: (product) => ({

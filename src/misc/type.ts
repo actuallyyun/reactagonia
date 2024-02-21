@@ -55,3 +55,10 @@ export type Cart = {
   item: CartItem
   totalQuantity: number
 }
+
+export type UpdateProductInput = {
+  title: string
+  price: number
+}
+
+export type UpdateProductRequest = UpdateProductInput & { id: number }
