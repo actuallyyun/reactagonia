@@ -1,10 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import {
-  Category,
-  Product,
-  UpdateProductInput,
-  UpdateProductRequest
-} from '../misc/type'
+import { Category, Product, UpdateProductRequest } from '../misc/type'
 
 const fakeStoreApi = createApi({
   reducerPath: 'fakeStoreApi',
