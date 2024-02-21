@@ -1,5 +1,5 @@
-import React from "react";
-import "./App.css";
+import React, { useEffect } from 'react'
+import './App.css'
 import Home from './pages/home/Home'
 import { Routes, Route, Navigate, Outlet, Link } from 'react-router-dom'
 
@@ -8,14 +8,33 @@ import Profile from './pages/account/Profile'
 import Cart from './pages/cart/Cart'
 import SingleProductPage from './pages/product/SingleProductPage'
 import CategoryPage from './pages/category/CategoryPage'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { AppState } from './app/store'
-import ProtectedRoute from './components/ProtectedRoute'
+import PrivateRoute from './components/PrivateRoute'
 import Auth from './pages/account/Auth'
 import Login from './pages/account/Login'
+import {
+  useGetUserQuery,
+  useLoginMutation,
+  useGetRefreshTokenMutation
+} from './services/auth'
+import { selectCurrentUser } from './components/user/userSlice'
 
 function App() {
-  const user = useSelector((state: AppState) => state.user.user)
+  const [refreshToken] = useGetRefreshTokenMutation()
+
+  const user = useSelector(selectCurrentUser)
+  console.log({ user })
+
+  const dispatch = useDispatch()
+  const { isLoggedIn, token } = useSelector((state: AppState) => state.user)
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      refreshToken({ refreshToken: token?.refresh_token ?? '' })
+    }
+  }, [token])
+
   return (
     <div className='App'>
       <Routes>
@@ -26,12 +45,15 @@ function App() {
         <Route
           path='/account'
           element={
-            <ProtectedRoute user={user} redirectPath='/auth'>
+            <PrivateRoute>
               <Profile />
-            </ProtectedRoute>
+            </PrivateRoute>
           }
         />
-        <Route path='/auth' element={<Auth />}></Route>
+        <Route
+          path='/auth'
+          element={isLoggedIn ? <Navigate to={'/account'} /> : <Auth />}
+        ></Route>
         <Route path='/login' element={<Login />}></Route>
         <Route path='/cart' element={<Cart />}></Route>
       </Routes>
@@ -39,4 +61,4 @@ function App() {
   )
 }
 
-export default App;
+export default App

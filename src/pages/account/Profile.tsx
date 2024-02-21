@@ -1,10 +1,27 @@
-import UserLoginForm from '../../components/user/UserRegisterForm'
+import { useDispatch } from 'react-redux'
+
+import { useGetUserQuery } from '../../services/auth'
+import { logOut } from '../../components/user/userSlice'
 
 export default function Profile() {
+  const { data, error } = useGetUserQuery()
+  console.log({ data, error })
+  const dispatch = useDispatch()
+
+  const handleLogOut = () => {
+    dispatch(logOut())
+  }
+
   return (
     <>
-      <UserLoginForm />
-      <p>profile</p>
+      <h1>profile</h1>
+      {data && (
+        <div>
+          <p>{data.name}</p>
+          <p>{data.email}</p>
+        </div>
+      )}
+      <button onClick={handleLogOut}>log out</button>
     </>
   )
 }

@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 import UserRegisterForm from '../../components/user/UserRegisterForm'
 
 export default function Auth() {
@@ -5,6 +7,7 @@ export default function Auth() {
     <>
       <p>Auth</p>
       <UserRegisterForm />
+      <Link to='/login'>Login</Link>
     </>
   )
 }

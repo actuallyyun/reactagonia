@@ -16,17 +16,22 @@ const loginSchema = Yup.object().shape({
 })
 
 export default function UserLoginForm(): JSX.Element {
-  const [loginUser, { data, error, isLoading }] = useLoginMutation()
+    const navigate = useNavigate()
+    const [loginUser, { data, error, isLoading }] = useLoginMutation()
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors }
-  } = useForm({
-    resolver: yupResolver(loginSchema)
-  })
+    const {
+      register,
+      handleSubmit,
+      formState: { errors }
+    } = useForm({
+      resolver: yupResolver(loginSchema)
+    })
 
-  const onSubmit = (data: UserSignUpRequest) => loginUser(data)
+    const onSubmit = async (data: UserSignUpRequest) => await loginUser(data)
+    console.log({ data, error })
+    if (!error && data) {
+      navigate('/account')
+    }
 
   return (
     <div>

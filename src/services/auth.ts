@@ -13,9 +13,9 @@ export const authApi = createApi({
     baseUrl: 'https://api.escuelajs.co/api/v1',
     prepareHeaders: (headers, { getState }) => {
       // By default, if we have a token in the store, let's use that for authenticated requests
-      const token = (getState() as AppState).user.token
+      const token = (getState() as AppState).user.token?.access_token
       if (token) {
-        headers.set('authorization', `Bearer ${token}`)
+        headers.set('Authorization', `Bearer ${token}`)
       }
       return headers
     }
@@ -37,9 +37,20 @@ export const authApi = createApi({
     }),
     getUser: builder.query<User, void>({
       query: () => ({ url: '/auth/profile' })
+    }),
+    getRefreshToken: builder.mutation<UserAuthToken, { refreshToken: string }>({
+      query: (refreshToken) => ({
+        url: '/auth/refresh-token',
+        method: 'POST',
+        body: refreshToken
+      })
     })
   })
 })
 
-export const { useRegisterMutation, useLoginMutation, useGetUserQuery } =
-  authApi
+export const {
+  useRegisterMutation,
+  useLoginMutation,
+  useGetUserQuery,
+  useGetRefreshTokenMutation
+} = authApi
