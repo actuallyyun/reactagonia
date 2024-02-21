@@ -6,7 +6,7 @@ import fakeStoreApi from '../services/fakeStore'
 import { categoryReducer } from '../components/category/categorySlice'
 import userReducer from '../components/user/userSlice'
 import { authApi } from '../services/auth'
-import cartReducer from '../pages/cart/cartSlice'
+import cartReducer from '../components/cart/cartSlice'
 
 // store all states
 const store = configureStore({

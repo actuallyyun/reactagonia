@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux'
 
-import { clearCart } from '../../pages/cart/cartSlice'
+import { clearCart } from './cartSlice'
 
 export default function ClearCart() {
   const dispath = useDispatch()

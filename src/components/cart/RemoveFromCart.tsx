@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux'
 
-import { removeItem } from '../../pages/cart/cartSlice'
+import { removeItem } from './cartSlice'
 
 type Props = {
   id: number

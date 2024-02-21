@@ -1,9 +1,45 @@
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { ChangeEvent, useState } from 'react'
+import { useDispatch } from 'react-redux'
 
 import ClearCart from '../../components/cart/ClearCart'
-import { selectAllItems } from './cartSlice'
+import { selectAllItems, updateQuantity } from '../../components/cart/cartSlice'
 import RemoveFromCart from '../../components/cart/RemoveFromCart'
+import { CartItem } from '../../misc/type'
+
+type CartItemProp = {
+  item: CartItem
+}
+const CartItemCard = ({ item }: CartItemProp) => {
+  const [quantity, setQuantity] = useState<number>(item.quantity)
+  const handleQuantityChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setQuantity((prev) => (prev = parseInt(e.target.value)))
+  }
+  const dispatch = useDispatch()
+  const handleUpdate = (id: number) => {
+    dispatch(
+      updateQuantity({
+        productId: id,
+        quantity: quantity
+      })
+    )
+  }
+
+  return (
+    <>
+      <p>id:{item.productId}</p>
+      <input
+        type='number'
+        value={quantity}
+        max={10}
+        min={1}
+        onChange={handleQuantityChange}
+      />
+      <button onClick={() => handleUpdate(item.productId)}>Update</button>
+    </>
+  )
+}
 
 export default function Cart() {
   const items = useSelector(selectAllItems)
@@ -13,13 +49,13 @@ export default function Cart() {
       {!items.length && <p>Your cart is empty</p>}
       <ul>
         {items.length &&
-          items.map((_item) => {
+          items.map((item) => {
             return (
               <div>
                 <li>
-                  item:{_item.productId} quantity:{_item.quantity}
+                  <CartItemCard item={item} />
                 </li>
-                <RemoveFromCart id={_item.productId} />
+                <RemoveFromCart id={item.productId} />
               </div>
             )
           })}

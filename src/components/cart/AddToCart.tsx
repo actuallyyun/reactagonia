@@ -1,11 +1,7 @@
 import { useDispatch } from 'react-redux'
-import * as Yup from 'yup'
-import { useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { useNavigate } from 'react-router-dom'
-import { useState } from 'react'
 
-import { addItem } from '../../pages/cart/cartSlice'
+import { useState } from 'react'
+import { addItem } from './cartSlice'
 
 type Props = {
   id: number
