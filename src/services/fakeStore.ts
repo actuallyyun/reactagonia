@@ -34,9 +34,9 @@ const fakeStoreApi = createApi({
     }),
     createProduct: builder.mutation<Product, Partial<Product>>({
       query: (product) => ({
-        url: '/products',
+        url: '/products/',
         method: 'POST',
-        product
+        body: product
       }),
       invalidatesTags: [{ type: 'Products' }]
     }),

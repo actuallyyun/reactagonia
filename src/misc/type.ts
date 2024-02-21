@@ -17,6 +17,13 @@ export type Product = {
   category: Category
 }
 
+export type CreateProductRequest = {
+  title: string
+  price: number
+  description: string
+  categoryId: number
+}
+
 export type UserRegister = {
   name: string
   email: string
