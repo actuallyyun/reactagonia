@@ -38,3 +38,13 @@ export type UserLoginRequest = {
   email: string
   password: string
 }
+
+export type CartItem = {
+  productId: number
+  quantity: number
+}
+
+export type Cart = {
+  item: CartItem
+  totalQuantity: number
+}
