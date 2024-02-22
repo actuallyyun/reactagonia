@@ -5,14 +5,8 @@ import CategoryList from '../../components/category/CategoryList'
 export default function Home() {
   return (
     <div>
-      <div>
-        <h1 className='text-red-600 text-3xl font-bold underline'>Tailwind</h1>
-        <Link to='/account'>Account</Link>
-      </div>
-      <div>
-        <Link to='/cart'>Shopping Cart</Link>
-      </div>
       <CategoryList />
+      <h1>Products</h1>
       <Products />
     </div>
   )

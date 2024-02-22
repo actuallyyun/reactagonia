@@ -9,8 +9,8 @@ export default function SortsByPrice() {
   }
 
   return (
-    <div className='max-w-sm mx-auto'>
-      <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>
+    <div className='max-w-md mx-auto flex flex-row'>
+      <label className='mb-2 text-sm font-medium text-gray-900 dark:text-white'>
         Select an option
       </label>
       <select

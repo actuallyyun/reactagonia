@@ -18,6 +18,7 @@ import {
   useGetRefreshTokenMutation
 } from './services/auth'
 import { selectCurrentUser } from './components/user/userSlice'
+import Nav from './components/header/Header'
 
 function App() {
   const [refreshToken] = useGetRefreshTokenMutation()
@@ -35,27 +36,30 @@ function App() {
   }, [token])
 
   return (
-    <div className='App'>
-      <Routes>
-        <Route path='/' element={<Home />}></Route>
-        <Route path='/shop' element={<Shop />}></Route>
-        <Route path='/product/:productId' element={<SingleProductPage />} />
-        <Route path='/category/:categoryId' element={<CategoryPage />} />
-        <Route
-          path='/account'
-          element={
-            <PrivateRoute>
-              <Profile />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path='/auth'
-          element={isLoggedIn ? <Navigate to={'/account'} /> : <Auth />}
-        ></Route>
-        <Route path='/login' element={<Login />}></Route>
-        <Route path='/cart' element={<Cart />}></Route>
-      </Routes>
+    <div className='container py-4 mx-auto'>
+      <Nav />
+      <div className='md:max-w-lg'>
+        <Routes>
+          <Route path='/' element={<Home />}></Route>
+          <Route path='/shop' element={<Shop />}></Route>
+          <Route path='/product/:productId' element={<SingleProductPage />} />
+          <Route path='/category/:categoryId' element={<CategoryPage />} />
+          <Route
+            path='/account'
+            element={
+              <PrivateRoute>
+                <Profile />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path='/auth'
+            element={isLoggedIn ? <Navigate to={'/account'} /> : <Auth />}
+          ></Route>
+          <Route path='/login' element={<Login />}></Route>
+          <Route path='/cart' element={<Cart />}></Route>
+        </Routes>
+      </div>
     </div>
   )
 }

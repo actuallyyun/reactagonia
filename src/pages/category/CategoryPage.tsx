@@ -18,11 +18,17 @@ export default function CategoryPage() {
   console.log({ data })
 
   return (
-    <div>
-      <SortByPrice />
-      {data?.map((product) => (
-        <ProductCard product={product} key={product.id} />
-      ))}
+    <div className='container'>
+      <div className='grid'>
+        <div className='grid-cols-12 py-4'>
+          <SortByPrice />
+        </div>
+        <div className='grid gap-4 grid-cols-3 grid-rows-auto'>
+          {data?.map((product) => (
+            <ProductCard product={product} key={product.id} />
+          ))}
+        </div>
+      </div>
     </div>
   )
 }
