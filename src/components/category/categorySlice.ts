@@ -3,7 +3,7 @@ import { Category } from '../../misc/type'
 import fakeStoreApi from '../../services/fakeStore'
 import { AppState } from '../../app/store'
 
-type InitialState = {
+export type InitialState = {
   sortBy: string
   categories: Category[] | null
 }

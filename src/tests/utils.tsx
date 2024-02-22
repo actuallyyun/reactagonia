@@ -3,6 +3,7 @@ import { render } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import { setupStore } from '../app/store'
 import { setupListeners } from '@reduxjs/toolkit/query'
+import { BrowserRouter } from 'react-router-dom'
 
 export function renderWithProviders(
   ui: React.ReactElement,
@@ -16,7 +17,11 @@ export function renderWithProviders(
   setupListeners(store.dispatch)
 
   function Wrapper({ children }: PropsWithChildren<{}>) {
-    return <Provider store={store}>{children}</Provider>
+    return (
+      <BrowserRouter>
+        <Provider store={store}>{children}</Provider>
+      </BrowserRouter>
+    )
   }
 
   return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) }
