@@ -79,7 +79,7 @@ export default function Cart() {
         <Table.Body className='divide-y'>
           {items.length &&
             items.map((item) => {
-              return <CartItemCard item={item} />
+              return <CartItemCard item={item} key={item.productId} />
             })}
         </Table.Body>
       </Table>

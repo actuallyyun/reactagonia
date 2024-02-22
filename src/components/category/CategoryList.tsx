@@ -10,7 +10,12 @@ export default function CategoryList() {
     <div className='grid gap-4 grid-cols-5 grid-rows-auto'>
       {categories &&
         categories.map((c) => (
-          <Link to={`/category/${c.id}`}>
+          <Link
+            to={`/category/${c.id}`}
+            target='_blank'
+            aria-describedby={c.name}
+            key={c.name}
+          >
             <CategoryCard category={c} />
           </Link>
         ))}
