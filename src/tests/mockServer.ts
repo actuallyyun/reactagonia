@@ -3,7 +3,7 @@ import { setupServer } from 'msw/node'
 
 import { Product, CreateProductRequest } from '../misc/type'
 
-export const mockProducts: Partial<Product>[] = [
+export const mockProducts: Product[] = [
   {
     id: 1,
     title: 'product1',
@@ -16,7 +16,9 @@ export const mockProducts: Partial<Product>[] = [
       image: 'img',
       creationAt: '2024',
       updatedAt: '2024'
-    }
+    },
+    creationAt: '2024',
+    updatedAt: '2024'
   },
   {
     id: 2,
@@ -30,7 +32,9 @@ export const mockProducts: Partial<Product>[] = [
       image: 'img',
       creationAt: '2024',
       updatedAt: '2024'
-    }
+    },
+    creationAt: '2024',
+    updatedAt: '2024'
   },
   {
     id: 3,
@@ -44,7 +48,9 @@ export const mockProducts: Partial<Product>[] = [
       image: 'img',
       creationAt: '2024',
       updatedAt: '2024'
-    }
+    },
+    creationAt: '2024',
+    updatedAt: '2024'
   }
 ]
 
@@ -71,21 +77,20 @@ export const handler = [
     return HttpResponse.json(mockProducts, { status: 200 })
   }),
   http.get('https://api.escuelajs.co/api/v1/categories', () => {
-    console.log('called')
     return HttpResponse.json(mockCategories)
   }),
-  http.get('https://api.escuelajs.co/api/v1/products/:id', ({ request }) => {
-    console.log(request.url)
-    const url = new URL(request.url)
-    const productId = url.searchParams.get('id')
-
-    if (productId) {
-      const product = mockProducts.filter((_p) => _p.id === productId)
-      return HttpResponse.json(product)
-    } else {
-      return new HttpResponse(null, { status: 404 })
+  http.get(
+    'https://api.escuelajs.co/api/v1/products/:id',
+    ({ request, params }) => {
+      const productId = Number(params.id)
+      if (productId) {
+        const product = mockProducts.find((_p) => _p.id === productId)
+        return HttpResponse.json(product)
+      } else {
+        return new HttpResponse(null, { status: 404 })
+      }
     }
-  })
+  )
   //http.post('https://api.escuelajs.co/api/v1/products', async ({ request }) => {
   //  const product = (await request.json()) as CreateProductRequest
   //  const createdProduct: Partial<Product> = {

@@ -10,6 +10,7 @@ import RemoveFromCart from '../../components/cart/RemoveFromCart'
 import { CartItem } from '../../misc/type'
 
 import { useGetSingleProductQuery } from '../../services/fakeStore'
+import { removeItem } from './cartSlice'
 
 type CartItemProp = {
   item: CartItem
@@ -30,6 +31,10 @@ const CartItemCard = ({ item }: CartItemProp) => {
   }
   const { data } = useGetSingleProductQuery(item.productId)
 
+  const handleRemove = (id: number) => {
+    dispatch(removeItem(id))
+  }
+
   return (
     <>
       <Table.Row className='bg-white dark:border-gray-700 dark:bg-gray-800'>
@@ -45,6 +50,7 @@ const CartItemCard = ({ item }: CartItemProp) => {
             max={10}
             min={1}
             onChange={handleQuantityChange}
+            name={data?.title}
           />
         </Table.Cell>
         <Table.Cell>
@@ -54,6 +60,7 @@ const CartItemCard = ({ item }: CartItemProp) => {
           >
             Update
           </button>
+          <button onClick={() => handleRemove(item.productId)}>Remove</button>
         </Table.Cell>
       </Table.Row>
     </>
@@ -65,24 +72,26 @@ export default function Cart() {
   return (
     <div className='overflow-x-auto '>
       {!items.length && <p>Your cart is empty</p>}
-      <Table hoverable className=''>
-        <Table.Head>
-          <Table.HeadCell>Product name</Table.HeadCell>
-          <Table.HeadCell>Category</Table.HeadCell>
-          <Table.HeadCell>Price</Table.HeadCell>
-          <Table.HeadCell>Quantity</Table.HeadCell>
-          <Table.HeadCell>
-            <span className='sr-only'>Edit</span>
-          </Table.HeadCell>
-        </Table.Head>
+      {items.length && (
+        <Table hoverable className=''>
+          <Table.Head>
+            <Table.HeadCell>Product name</Table.HeadCell>
+            <Table.HeadCell>Category</Table.HeadCell>
+            <Table.HeadCell>Price</Table.HeadCell>
+            <Table.HeadCell>Quantity</Table.HeadCell>
+            <Table.HeadCell>
+              <span className='sr-only'>Edit</span>
+            </Table.HeadCell>
+          </Table.Head>
 
-        <Table.Body className='divide-y'>
-          {items.length &&
-            items.map((item) => {
-              return <CartItemCard item={item} key={item.productId} />
-            })}
-        </Table.Body>
-      </Table>
+          <Table.Body className='divide-y'>
+            {items.length &&
+              items.map((item) => {
+                return <CartItemCard item={item} key={item.productId} />
+              })}
+          </Table.Body>
+        </Table>
+      )}
       <div className='container py-6 w-9/12'>
         <div className='grid grid-cols-2 gap-4'>
           <ClearCart />
