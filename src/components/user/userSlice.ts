@@ -1,13 +1,14 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { UserAuthToken, User } from '../../misc/type'
+import { UserAuthToken, User, UserInfo } from '../../misc/type'
 import { AppState } from '../../app/store'
 import { authApi } from '../../services/auth'
+import { truncateSync } from 'fs'
 
 const userInStorage = localStorage.getItem('userAuth')
 const userAuthToken = userInStorage ? JSON.parse(userInStorage) : null
 
-type InitialState = {
-  user: User | null
+export type InitialState = {
+  user: UserInfo | null
   token: UserAuthToken | null
   isLoading: Boolean
   isLoggedIn: Boolean
@@ -26,11 +27,13 @@ const userSlice = createSlice({
   reducers: {
     setCredentials: (
       state,
-      action: PayloadAction<{ user: User; token: UserAuthToken }>
+      action: PayloadAction<{ user: UserInfo | null; token: UserAuthToken }>
     ) => {
       const { user, token } = action.payload
       state.user = user
       state.token = token
+      state.isLoading = false
+      state.isLoggedIn = true
     },
     logOut: (state, action: PayloadAction) => {
       state.user = null
@@ -56,12 +59,25 @@ const userSlice = createSlice({
         (state, { payload }) => {
           state.isLoggedIn = false
           state.isLoading = false
+          state.token = null
+          localStorage.removeItem('userAuth')
         }
       )
       .addMatcher(
         authApi.endpoints.getUser.matchFulfilled,
         (state, { payload }) => {
           state.user = payload
+          state.isLoggedIn = true
+          state.isLoading = false
+        }
+      )
+      .addMatcher(
+        authApi.endpoints.getUser.matchRejected,
+        (state, { payload }) => {
+          state.user = null
+          state.token = null
+          state.isLoggedIn = false
+          state.isLoading = false
         }
       )
       .addMatcher(
@@ -76,7 +92,11 @@ const userSlice = createSlice({
       .addMatcher(
         authApi.endpoints.getRefreshToken.matchRejected,
         (state, { payload }) => {
+          state.token = null
+          state.user = null
+          state.isLoggedIn = false
           state.isLoading = false
+          localStorage.removeItem('userAuth')
         }
       )
   }

@@ -40,6 +40,14 @@ export type User = UserRegister & {
   id: number
 }
 
+export type UserInfo = {
+  id: number
+  role: 'customer' | 'admin'
+  name: string
+  email: string
+  avatar: string
+}
+
 export type UserAuthToken = {
   access_token: string
   refresh_token: string

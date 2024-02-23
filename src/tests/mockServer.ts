@@ -1,8 +1,49 @@
 import { HttpResponse, http } from 'msw'
 import { setupServer } from 'msw/node'
 
-import { Product, CreateProductRequest } from '../misc/type'
+import {
+  Product,
+  CreateProductRequest,
+  UserAuthToken,
+  UserLoginRequest,
+  UserInfo
+} from '../misc/type'
+import { isTypeAliasDeclaration } from 'typescript'
 
+export const mockAuthToken: UserAuthToken = {
+  access_token: 'access',
+  refresh_token: 'refresh'
+}
+
+export const mockRefreshedAuthToken: UserAuthToken = {
+  access_token: 'access access',
+  refresh_token: 'refresh'
+}
+
+export const mockAuthHeader = {
+  Authorization: 'Bearer access'
+}
+export const mockUserInfo: UserInfo = {
+  id: 1,
+  name: 'user1',
+  email: 'user1@gmail.com',
+  role: 'customer',
+  avatar: 'img'
+}
+
+export const mockUserRes = {
+  id: 1,
+  name: 'user1',
+  email: 'user1@gmail.com',
+  role: 'customer',
+  avatar: 'img',
+  password: ''
+}
+
+export const userLoginRequest: UserLoginRequest = {
+  email: mockUserInfo.email,
+  password: 'user1password'
+}
 export const mockProducts: Product[] = [
   {
     id: 1,
@@ -89,6 +130,47 @@ export const handler = [
       } else {
         return new HttpResponse(null, { status: 404 })
       }
+    }
+  ),
+  http.post(
+    'https://api.escuelajs.co/api/v1/auth/login',
+    async ({ request }) => {
+      const userReq = await request.json()
+      if (!userReq) {
+        return new HttpResponse(null, { status: 400 })
+      }
+      if (
+        userReq?.email === userLoginRequest.email &&
+        userReq?.password === userLoginRequest.password
+      ) {
+        return HttpResponse.json(mockAuthToken, { status: 200 })
+      }
+      return new HttpResponse(null, { status: 400 })
+    }
+  ),
+  http.get('https://api.escuelajs.co/api/v1/auth/profile', ({ request }) => {
+    if (!request.headers.has('Authorization')) {
+      throw new HttpResponse(null, { status: 400 })
+    } else {
+      if (request.headers.get('Authorization') === 'Bearer access') {
+        return HttpResponse.json(mockUserRes, { status: 200 })
+      } else {
+        throw new HttpResponse(null, { status: 400 })
+      }
+    }
+  }),
+  http.post(
+    'https://api.escuelajs.co/api/v1/auth/refresh-token',
+    async ({ request }) => {
+      const token = await request.json()
+      if (!token) {
+        throw new HttpResponse(null, { status: 400 })
+      } else {
+        if (token?.refreshToken === 'refresh') {
+          return HttpResponse.json(mockRefreshedAuthToken)
+        }
+      }
+      return new HttpResponse(null, { status: 400 })
     }
   )
   //http.post('https://api.escuelajs.co/api/v1/products', async ({ request }) => {
