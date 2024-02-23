@@ -3,6 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { AppState } from '../app/store'
 import {
   User,
+  UserInfo,
   UserAuthToken,
   UserRegister,
   UserLoginRequest
@@ -33,10 +34,23 @@ export const authApi = createApi({
         url: '/auth/login',
         method: 'POST',
         body: credentials
-      })
+      }),
+      transformResponse: (response: UserAuthToken) => {
+        return response
+      }
     }),
-    getUser: builder.query<User, void>({
-      query: () => ({ url: '/auth/profile' })
+    getUser: builder.query<UserInfo, void>({
+      query: () => ({ url: '/auth/profile' }),
+      transformResponse: (response: User) => {
+        const { id, role, name, email, avatar } = response
+        return {
+          id,
+          role,
+          name,
+          email,
+          avatar
+        }
+      }
     }),
     getRefreshToken: builder.mutation<UserAuthToken, { refreshToken: string }>({
       query: (refreshToken) => ({
