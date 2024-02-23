@@ -2,9 +2,15 @@ import * as Yup from 'yup'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useNavigate } from 'react-router-dom'
+import { Label, TextInput, Button } from 'flowbite-react'
 
 import { UserRegister } from '../../misc/type'
 import { useRegisterMutation } from '../../services/auth'
+import {
+  ShowLoading,
+  handleFetchBaseQueryError,
+  ShowFeedback
+} from '../utils/feedback'
 
 const SignupSchema = Yup.object().shape({
   name: Yup.string()
@@ -26,10 +32,11 @@ const UserRegisterForm: React.FC<{}> = () => {
   const nagivate = useNavigate()
 
   const [addUser, { data, error, isLoading }] = useRegisterMutation()
-  console.log({ data })
+
   if (!error && data) {
-    nagivate('/login')
+    setTimeout(() => nagivate('/login'), 3000)
   }
+
   const {
     register,
     handleSubmit,
@@ -42,22 +49,76 @@ const UserRegisterForm: React.FC<{}> = () => {
   }
 
   return (
-    <div>
-      <h1>Register</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <label htmlFor='name'>Username</label>
-        <input {...register('name')} />
-        {errors.name ? <div>{errors.name.message}</div> : null}
-        <label htmlFor='email'>Email</label>
-        <input {...register('email')} placeholder='email' />
-        {errors.email ? <div>{errors.email.message}</div> : null}
-        <label htmlFor='password'>password</label>
-        <input {...register('password')} placeholder='password' />
-        {errors.password ? <div>{errors.password.message}</div> : null}
-        <label htmlFor='avatar'>avatar</label>
-        <input {...register('avatar')} placeholder='avatar' />
-        {errors.avatar ? <div>{errors.avatar.message}</div> : null}
-        <button type='submit'>Submit</button>
+    <div className='grid gap-8'>
+      <h1>Create an Account.</h1>
+      <form onSubmit={handleSubmit(onSubmit)} className='grid'>
+        <Label htmlFor='name' value='Username' />
+        <TextInput
+          {...register('name')}
+          placeholder='Username'
+          color={errors.name ? 'failure' : ''}
+          helperText={
+            <>
+              {errors.name && (
+                <span className='font-medium'>{errors.name.message}</span>
+              )}
+            </>
+          }
+        />
+        <Label htmlFor='email' value='Email' />
+        <TextInput
+          {...register('email')}
+          placeholder='email'
+          color={errors.email ? 'failure' : ''}
+          helperText={
+            <>
+              {errors.email && (
+                <span className='font-medium'>{errors.email.message}</span>
+              )}
+            </>
+          }
+        />
+        <Label htmlFor='password' value='password' />
+        <TextInput
+          {...register('password')}
+          placeholder='password'
+          color={errors.password ? 'failure' : ''}
+          helperText={
+            <>
+              {errors.password && (
+                <span className='font-medium'>{errors.password.message}</span>
+              )}
+            </>
+          }
+        />
+        <Label htmlFor='avatar' value='avatar' />
+        <TextInput
+          {...register('avatar')}
+          placeholder='avatar'
+          color={errors.avatar ? 'failure' : ''}
+          helperText={
+            <>
+              {errors.avatar && (
+                <span className='font-medium'>{errors.avatar.message}</span>
+              )}
+            </>
+          }
+        />
+        {error && handleFetchBaseQueryError(error)}
+        {isLoading && <ShowLoading />}
+        {!isLoading && data && (
+          <ShowFeedback
+            state='success'
+            message='Sign up successfully. You will be redirected to login page.'
+          />
+        )}
+        <p>
+          Please read our Privacy Notice for how we process your personal data
+          and how you can exercise your privacy rights.
+        </p>
+        <Button type='submit' gradientDuoTone='purpleToPink'>
+          Create Account
+        </Button>
       </form>
     </div>
   )

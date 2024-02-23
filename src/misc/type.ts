@@ -74,3 +74,5 @@ export type UpdateProductInput = {
 }
 
 export type UpdateProductRequest = UpdateProductInput & { id: number }
+
+

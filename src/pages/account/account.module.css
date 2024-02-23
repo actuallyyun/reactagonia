@@ -1,0 +1,17 @@
+.loginPage{
+    width:100%;
+    margin:auto;
+
+}
+
+@media (min-width: 768px) {
+    .loginPage{
+        width: 70%;
+    }
+}
+
+@media(min-width:1024px){
+    .loginPage{
+        width: 45%;
+    }
+}
