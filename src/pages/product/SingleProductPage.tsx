@@ -10,6 +10,7 @@ import {
 import AddToCart from '../../components/cart/AddToCart'
 import { AppState } from '../../app/store'
 import UpdateProductForm from '../../components/product/UpdateProductForm'
+import { isAdmin } from '../../components/user/userSlice'
 
 const RemoveProduct = ({ id }: { id: number }) => {
   const nav = useNavigate()
@@ -24,6 +25,7 @@ const RemoveProduct = ({ id }: { id: number }) => {
 }
 
 export default function SingleProductPage() {
+  const admin = useSelector(isAdmin)
   const { productId } = useParams()
 
   const { data, error, isLoading } = useGetSingleProductQuery(Number(productId))
@@ -39,8 +41,8 @@ export default function SingleProductPage() {
             {data.id} {data.title}
           </p>
           <AddToCart id={data.id} />
-          {isLoggedIn && <UpdateProductForm product={data} />}
-          {isLoggedIn && <RemoveProduct id={data.id} />}
+          {isLoggedIn && admin && <UpdateProductForm product={data} />}
+          {isLoggedIn && admin && <RemoveProduct id={data.id} />}
           <Link to='/'>Continue Shopping</Link>
         </div>
       )}

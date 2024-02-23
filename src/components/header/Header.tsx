@@ -27,6 +27,11 @@ export default function Nav() {
           Catagonia
         </span>
       </Navbar.Brand>
+      {!isLoggedIn && (
+        <div className='flex md:order-2'>
+          <a href='/account'>Account</a>
+        </div>
+      )}
       {isLoggedIn && (
         <div className='flex md:order-2'>
           <Dropdown

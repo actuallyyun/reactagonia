@@ -108,3 +108,4 @@ export default userReducer
 
 export const selectCurrentUser = (state: AppState) => state.user.user
 export const selectCurrentToken = (state: AppState) => state.user.token
+export const isAdmin = (state: AppState) => state.user.user?.role === 'admin'

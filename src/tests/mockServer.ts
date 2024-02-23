@@ -135,7 +135,7 @@ export const handler = [
   http.post(
     'https://api.escuelajs.co/api/v1/auth/login',
     async ({ request }) => {
-      const userReq = await request.json()
+      const userReq = (await request.json()) as UserLoginRequest | null
       if (!userReq) {
         return new HttpResponse(null, { status: 400 })
       }
@@ -162,11 +162,11 @@ export const handler = [
   http.post(
     'https://api.escuelajs.co/api/v1/auth/refresh-token',
     async ({ request }) => {
-      const token = await request.json()
+      const token = (await request.json()) as { refreshToken: string } | null
       if (!token) {
         throw new HttpResponse(null, { status: 400 })
       } else {
-        if (token?.refreshToken === 'refresh') {
+        if (token['refreshToken'] === 'refresh') {
           return HttpResponse.json(mockRefreshedAuthToken)
         }
       }
