@@ -2,7 +2,7 @@
     background-repeat: no-repeat;
     height: 100%;
     width: 100%;
-    z-index: 100;
+    z-index: 0;
     grid-column: 1/-1;
     grid-row: 1/-1;
 }
@@ -17,7 +17,7 @@
 .hero_content{
     grid-row: -1/1;
     grid-column: 1/13;
-    z-index: 200;
+    z-index: 10;
 }
 .grid_center{
     display: flex;

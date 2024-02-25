@@ -1,0 +1,49 @@
+.categorySlider_layout{
+    display: grid;
+    grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
+    gap:20px;
+    grid-auto-rows: minmax(100px, auto);
+
+}
+
+.cardOverlay_wrapper{
+    position: relative;
+}
+
+.cardOverlay_wrapper img{
+    display: block;
+    object-fit: cover;
+    width: 100%;
+    height: auto;
+}
+
+.overlay {
+    position: absolute; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .overlay_0 {
+   inset:0;
+  
+  }
+
+  .overlay_transform{
+    transform: scale(0);
+    transition: all .3s ease-in-out;
+  }
+  .overlayImg_transform{
+    opacity: 0.8;
+  }
+  
+  .cardOverlay_wrapper:hover .overlay_transform {
+    transform: scale(1);
+  }
+  .cardOverlay_wrapper:hover .overlayImg_transform{
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  .cardOverlay_wrapper:hover .overlayContent_transform{
+    transform: scale(1.12) translateY(10px);
+  }

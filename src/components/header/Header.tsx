@@ -38,7 +38,7 @@ export default function Nav() {
   }
 
   return (
-    <Navbar fluid rounded className='px-4 md:px-16'>
+    <Navbar fluid rounded className='px-4 md:px-16 z-50'>
       <Navbar.Collapse>
         <Navbar.Link href='/' active>
           Home
