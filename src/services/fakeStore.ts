@@ -44,7 +44,9 @@ const fakeStoreApi = createApi({
       invalidatesTags: [{ type: 'Products' }]
     }),
     getCategories: builder.query<Category[], void>({
-      query: () => ({ url: '/categories', method: 'GET' })
+      query: () => ({ url: '/categories', method: 'GET' }),
+      transformResponse: (response: Category[], meta, arg) =>
+        response.slice(0, 5)
     }),
     getProductsByCategory: builder.query({
       query: ({
