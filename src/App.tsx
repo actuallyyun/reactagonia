@@ -36,9 +36,9 @@ function App() {
   }, [token])
 
   return (
-    <div className='container py-4 mx-auto'>
+    <div className=''>
       <Nav />
-      <div className='md:max-w-lg px-4 md:px-16'>
+      <div className=''>
         <Routes>
           <Route path='/' element={<Home />}></Route>
           <Route path='/shop' element={<Navigate to={'/'} />}></Route>
