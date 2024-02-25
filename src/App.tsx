@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import Home from './pages/home/Home'
 import { Routes, Route, Navigate, Outlet, Link } from 'react-router-dom'
 
-import Shop from './pages/shop/Shop'
+import Shop from './pages/products/Shop'
 import Profile from './pages/account/Profile'
 import Cart from './pages/cart/Cart'
 import SingleProductPage from './pages/product/SingleProductPage'
@@ -38,12 +38,13 @@ function App() {
   return (
     <div className='container py-4 mx-auto'>
       <Nav />
-      <div className='md:max-w-lg'>
+      <div className='md:max-w-lg px-4 md:px-16'>
         <Routes>
           <Route path='/' element={<Home />}></Route>
-          <Route path='/shop' element={<Shop />}></Route>
+          <Route path='/shop' element={<Navigate to={'/'} />}></Route>
+          <Route path='/product' element={<Navigate to={'/'} />}></Route>
           <Route path='/product/:productId' element={<SingleProductPage />} />
-          <Route path='/category/:categoryId' element={<CategoryPage />} />
+          <Route path='/shop/:categoryId' element={<CategoryPage />} />
           <Route
             path='/account'
             element={
@@ -56,7 +57,6 @@ function App() {
             path='/auth'
             element={isLoggedIn ? <Navigate to={'/account'} /> : <Auth />}
           ></Route>
-          <Route path='/login' element={<Login />}></Route>
           <Route path='/cart' element={<Cart />}></Route>
         </Routes>
       </div>
