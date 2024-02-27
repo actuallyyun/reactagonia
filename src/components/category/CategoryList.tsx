@@ -14,7 +14,7 @@ export default function CategoryList() {
         {categories &&
           categories.map((c) => (
             <Link
-              to={`/category/${c.id}`}
+              to={`/shop/${c.id}`}
               target='_blank'
               aria-describedby={c.name}
               key={c.name}

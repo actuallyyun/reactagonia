@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { UseSelector } from 'react-redux'
 
 import { useGetProductsByCategoryQuery } from '../../services/fakeStore'
@@ -15,20 +15,27 @@ export default function CategoryPage() {
     categoryId: Number(categoryId),
     sortBy
   })
-  console.log({ data })
 
   return (
     <div className='container'>
-      <div className='grid'>
-        <div className='grid-cols-12 py-4'>
-          <SortByPrice />
+      {data && (
+        <div className='grid'>
+          {
+            <div>
+              <h2>{data[0].category.name}</h2>
+              <p>{data.length} Items</p>
+            </div>
+          }
+          <div className='py-4 justify-start'>
+            <SortByPrice />
+          </div>
+          <div className='grid gap-4 grid-cols-3 grid-rows-auto'>
+            {data?.map((product) => (
+              <ProductCard product={product} key={product.id} />
+            ))}
+          </div>
         </div>
-        <div className='grid gap-4 grid-cols-3 grid-rows-auto'>
-          {data?.map((product) => (
-            <ProductCard product={product} key={product.id} />
-          ))}
-        </div>
-      </div>
+      )}
     </div>
   )
 }

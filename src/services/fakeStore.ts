@@ -56,15 +56,12 @@ const fakeStoreApi = createApi({
         categoryId: number
         sortBy: string
       }) => ({
-        url: `/categories/${categoryId}/products`,
+        url: `/categories/${categoryId}/products/`,
         method: 'GET'
       }),
       providesTags: ['Category'],
       transformResponse: (response: Product[], meta, arg) => {
         console.log({ response })
-        if (arg.sortBy === 'default') {
-          return response
-        }
         if (arg.sortBy === 'ascending') {
           return response.sort((a, b) => a.price - b.price)
         }
@@ -76,6 +73,7 @@ const fakeStoreApi = createApi({
             (a, b) => Date.parse(a.creationAt) - Date.parse(b.creationAt)
           )
         }
+        return response
       }
     })
   })

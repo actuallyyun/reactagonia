@@ -1,4 +1,5 @@
 import { useDispatch } from 'react-redux'
+import { Button } from 'flowbite-react'
 
 import { useState } from 'react'
 import { addItem } from './cartSlice'
@@ -12,10 +13,11 @@ export default function AddToCart({ id }: Props) {
   const dispath = useDispatch()
 
   const handleClick = (id: number) => {
+    console.log('clicked')
     dispath(addItem({ productId: id, quantity: quantity }))
   }
   return (
-    <>
+    <div className='flex flex-row gap-2 md:gap-4'>
       <input
         type='number'
         value={quantity}
@@ -23,7 +25,14 @@ export default function AddToCart({ id }: Props) {
         max={10}
         onChange={(e) => setQuantity(parseInt(e.target.value))}
       />
-      <button onClick={() => handleClick(id)}>Add To Cart</button>
-    </>
+      <Button
+        onClick={() => handleClick(id)}
+        color='light'
+        pill
+        className='text-nowrap'
+      >
+        Quick Add
+      </Button>
+    </div>
   )
 }

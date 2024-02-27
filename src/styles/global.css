@@ -10,14 +10,12 @@
     @apply text-5xl font-extrabold dark:text-white;
   }
   h2{
-    @apply ms-2 font-semibold text-gray-500 dark:text-gray-400
+    @apply text-4xl  font-bold dark:text-white 
   }
   h3 {
     @apply text-3xl font-bold dark:text-white
   }
-  p {
-    @apply mb-3 text-gray-500 dark:text-gray-400
-  }
+
   code {
     @apply font-mono;
     @apply bg-slate-50;

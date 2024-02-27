@@ -1,5 +1,6 @@
 import { Product } from '../../misc/type'
 import { Card } from 'flowbite-react'
+import { Link } from 'react-router-dom'
 
 import AddToCart from '../cart/AddToCart'
 import { cleanImageUrl, generateRandomImage } from '../../misc/utils'
@@ -12,7 +13,7 @@ export default function ProductCard({ product }: ProductCardProp) {
   const images = product.images.map((img) => {
     return cleanImageUrl(img) ?? generateRandomImage()
   })
-  console.log({ images })
+
   return (
     <>
       {' '}
@@ -21,9 +22,11 @@ export default function ProductCard({ product }: ProductCardProp) {
         imgAlt='Apple Watch Series 7 in colors pink, silver, and black'
         imgSrc={images[0]}
       >
-        <h5 className='text-xl font-semibold tracking-tight text-gray-900 dark:text-white'>
-          {product.title}
-        </h5>
+        <Link to={`/product/${product.id}`} target='_blank'>
+          <h5 className='text-xl font-semibold tracking-tight text-gray-900 dark:text-white'>
+            {product.title}
+          </h5>
+        </Link>
         <span className='text-3xl font-bold text-gray-900 dark:text-white'>
           ${product.price}
         </span>
