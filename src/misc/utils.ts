@@ -9,7 +9,6 @@ import { Product } from './type'
 //  unique = [...new Set(list.map((o) => JSON.stringify(o)))].map((s) =>
 //  JSON.parse(s)
 //);
-
 export const getCategories = (products: Product[]) => {
   return products
     .map((product) => product.category)
@@ -20,4 +19,17 @@ export const getCategories = (products: Product[]) => {
         image: category.image
       }
     })
+}
+
+export const cleanImageUrl = (url: string) => {
+  if (!url) {
+    return null
+  }
+  if (url.slice(0, 5) === 'https') {
+    return url
+  }
+  if (url.slice(0, 2) === '["') {
+    return url.slice(2, url.length - 2)
+  }
+  return null
 }
