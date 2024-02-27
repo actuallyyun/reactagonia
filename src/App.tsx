@@ -36,7 +36,7 @@ function App() {
   }, [token])
 
   return (
-    <div className=''>
+    <div className='container'>
       <Nav />
       <div className=''>
         <Routes>

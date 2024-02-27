@@ -17,19 +17,19 @@ export default function CategoryPage() {
   })
 
   return (
-    <div className='container'>
+    <div className='container mx-auto px-4 md:px-16 py-8'>
       {data && (
-        <div className='grid'>
+        <div className='grid gap-4'>
           {
-            <div>
+            <div className='grid gap-2'>
               <h2>{data[0].category.name}</h2>
               <p>{data.length} Items</p>
             </div>
           }
-          <div className='py-4 justify-start'>
+          <div className='justify-start'>
             <SortByPrice />
           </div>
-          <div className='grid gap-4 grid-cols-3 grid-rows-auto'>
+          <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3 grid-rows-auto items-center justify-center'>
             {data?.map((product) => (
               <ProductCard product={product} key={product.id} />
             ))}

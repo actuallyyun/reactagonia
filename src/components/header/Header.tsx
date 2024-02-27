@@ -4,32 +4,44 @@ import { FaRegUser } from 'react-icons/fa6'
 import { FaCat } from 'react-icons/fa6'
 import { BsBag } from 'react-icons/bs'
 import { Link } from 'react-router-dom'
+import { Modal } from 'flowbite-react'
+import { useState } from 'react'
 
 import { useGetUserQuery } from '../../services/auth'
 import { AppState } from '../../app/store'
 import { logOut } from '../user/userSlice'
 import logo from '../../images/logo.png'
 import { selectAllCategories } from '../category/categorySlice'
+import { ModalProps } from '../cart/AddToCart'
 
-export const CategoryDropDown = () => {
+const CategoryModal = ({ openModal, setOpenModal }: ModalProps) => {
   const categories = useSelector(selectAllCategories)
   return (
-    <Dropdown arrowIcon={false} inline label='Shop'>
-      {categories &&
-        categories.map((cat) => {
-          return (
-            <Dropdown.Item>
-              <Link to={`/shop/${cat.id}`}>{cat.name}</Link>
-            </Dropdown.Item>
-          )
-        })}
-    </Dropdown>
+    <Modal
+      show={openModal}
+      position='top-left'
+      onClose={() => setOpenModal(false)}
+      className='max-w-56 bg-opacity-0 pt-8'
+    >
+      <Modal.Header className='bg-opacity-0'>Category</Modal.Header>
+      <Modal.Body>
+        <div className='grid gap-2'>
+          {categories &&
+            categories.map((cate) => (
+              <Link to={`/shop/${cate.id}`} onClick={() => setOpenModal(false)}>
+                {cate.name}
+              </Link>
+            ))}
+        </div>
+      </Modal.Body>
+    </Modal>
   )
 }
 
 export default function Nav() {
   const { isLoggedIn, token } = useSelector((state: AppState) => state.user)
   const { data, error } = useGetUserQuery()
+  const [openModal, setOpenModal] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -38,13 +50,14 @@ export default function Nav() {
   }
 
   return (
-    <Navbar fluid rounded className='px-4 md:px-16 z-50'>
+    <Navbar fluid rounded className='px-4 md:px-16 z-50 pt-4'>
       <Navbar.Collapse>
         <Navbar.Link href='/' active>
           Home
         </Navbar.Link>
-
-        <CategoryDropDown />
+        <Navbar.Link>
+          <button onClick={() => setOpenModal(true)}>Shop</button>
+        </Navbar.Link>
 
         <Navbar.Link href='/shop'>All</Navbar.Link>
       </Navbar.Collapse>
@@ -57,8 +70,9 @@ export default function Nav() {
       </Navbar.Brand>
 
       <div className='flex md:order-2 gap-8'>
-        <div className='inline-flex md:hidden'>
-          <CategoryDropDown />
+        <div className='md:hidden'>
+          <button onClick={() => setOpenModal(true)}>Shop</button>
+          <CategoryModal openModal={openModal} setOpenModal={setOpenModal} />
         </div>
         <a href='/cart'>
           <BsBag size={18} />
@@ -86,6 +100,7 @@ export default function Nav() {
           </Dropdown>
         )}
       </div>
+      <CategoryModal openModal={openModal} setOpenModal={setOpenModal} />
     </Navbar>
   )
 }

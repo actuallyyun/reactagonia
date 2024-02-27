@@ -12,11 +12,11 @@ type Props = {
   id: number
 }
 
-type CartModalProps = {
+export type ModalProps = {
   openModal: boolean
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>
 }
-export function CartModal({ openModal, setOpenModal }: CartModalProps) {
+export function CartModal({ openModal, setOpenModal }: ModalProps) {
   const items = useSelector(selectAllItems)
   return (
     <>
