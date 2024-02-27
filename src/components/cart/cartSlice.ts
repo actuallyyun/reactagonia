@@ -27,6 +27,7 @@ const cartSlice = createSlice({
       // if not found, add new item
       if (itemIndex === -1) {
         state.items.push(newItem)
+        localStorage.setItem('cart', JSON.stringify(state.items))
       } else {
         //if found, update quantity
         const newCart = state.items.map((prevItem, index) => {
@@ -40,7 +41,7 @@ const cartSlice = createSlice({
           }
         })
         state.items = newCart
-        localStorage.setItem('cart', JSON.stringify(state.items))
+        localStorage.setItem('cart', JSON.stringify(newCart))
       }
     },
     updateQuantity: (state, action: PayloadAction<CartItem>) => {
@@ -64,6 +65,7 @@ const cartSlice = createSlice({
           }
         })
         state.items = newCart
+        localStorage.setItem('cart', JSON.stringify(newCart))
       }
     },
     removeItem: (state, action: PayloadAction<number>) => {
@@ -76,8 +78,8 @@ const cartSlice = createSlice({
           (prevItem) => prevItem.productId !== action.payload
         )
         state.items = newCart
+        localStorage.setItem('cart', JSON.stringify(newCart))
       }
-      localStorage.setItem('cart', JSON.stringify(state.items))
     },
     clearCart: (state) => {
       state.items = []
