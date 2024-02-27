@@ -25,11 +25,20 @@ export const cleanImageUrl = (url: string) => {
   if (!url) {
     return null
   }
+  if (!url.includes('r')) {
+    return null
+  }
   if (url.slice(0, 5) === 'https') {
     return url
   }
   if (url.slice(0, 2) === '["') {
     return url.slice(2, url.length - 2)
   }
+
   return null
+}
+export const imageBaseUrl = ''
+export const generateRandomImage = () => {
+  const randomId = Math.floor(Math.random() * 200)
+  return `https://picsum.photos/id/${randomId}/640/480`
 }
