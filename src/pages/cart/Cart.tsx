@@ -10,12 +10,12 @@ import RemoveFromCart from '../../components/cart/RemoveFromCart'
 import { CartItem } from '../../misc/type'
 
 import { useGetSingleProductQuery } from '../../services/fakeStore'
-import { removeItem } from './cartSlice'
+import { removeItem } from '../../components/cart/cartSlice'
 
-type CartItemProp = {
+export type CartItemProp = {
   item: CartItem
 }
-const CartItemCard = ({ item }: CartItemProp) => {
+export const CartItemCard = ({ item }: CartItemProp) => {
   const [quantity, setQuantity] = useState<number>(item.quantity)
   const handleQuantityChange = (e: ChangeEvent<HTMLInputElement>) => {
     setQuantity((prev) => (prev = parseInt(e.target.value)))
