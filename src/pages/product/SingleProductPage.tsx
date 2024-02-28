@@ -2,7 +2,8 @@ import { useParams } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { Carousel } from 'flowbite-react'
+import { Carousel, Button } from 'flowbite-react'
+import { useState, useEffect } from 'react'
 
 import {
   useGetSingleProductQuery,
@@ -12,19 +13,47 @@ import AddToCart from '../../components/cart/AddToCart'
 import { AppState } from '../../app/store'
 import UpdateProductForm from '../../components/product/UpdateProductForm'
 import { isAdmin } from '../../components/user/userSlice'
-import styles from './product.module.css'
 import CustomBreadcrumb from '../../components/tailwindComponents/CustomBreadcrumb'
+import {
+  SuccessTooltip,
+  FailureTooltip
+} from '../../components/tailwindComponents/Tooltips'
 
 const RemoveProduct = ({ id }: { id: number }) => {
+  const [status, setStatus] = useState<string>('')
+
   const nav = useNavigate()
-  const [deleteProduct, { data, error, isLoading }] = useDeleteProductMutation()
+  const [deleteProduct, { data, error }] = useDeleteProductMutation()
   const handleRemove = (id: number) => {
     deleteProduct(id)
   }
-  if (data === true) {
-    nav('/')
-  }
-  return <button onClick={() => handleRemove(id)}>Remove</button>
+  useEffect(() => {
+    if (data) {
+      setStatus((prev) => (prev = 'success'))
+      setTimeout(() => nav('/'), 2000)
+    }
+    if (error) {
+      setStatus((prev) => (prev = 'failure'))
+    }
+  }, [data, error])
+
+  return (
+    <div className='grid gap-4  bg-gray-200 rounded-lg py-12 px-8'>
+      <h4>Remove product</h4>
+      <p>
+        Once the product is removed, you will not be able to access it any more.
+      </p>
+      <div className={status === 'success' ? 'block' : 'hidden'}>
+        <SuccessTooltip message='Product removed successfully.' />
+      </div>
+      <div className={status === 'failure' ? 'block' : 'hidden'}>
+        <FailureTooltip message='Product not removed successfully.' />
+      </div>
+      <Button onClick={() => handleRemove(id)} color='warning' pill>
+        Remove
+      </Button>
+    </div>
+  )
 }
 
 function ProductCarousel({ images }: { images: string[] }) {
@@ -53,11 +82,8 @@ export default function SingleProductPage() {
 
   return (
     <div className='container mx-auto px-4 md:px-16 py-16'>
-      <div className={styles.gridLayout}>
-        <div className=''>
-          {/*{data && data.images.map((img) => <img src={img} alt={data.title} />)}*/}
-          {data && <ProductCarousel images={data.images} />}
-        </div>
+      <div className='grid md:grid-cols-2 gap-8'>
+        <div>{data && <ProductCarousel images={data.images} />}</div>
         <div className='grid gap-2'>
           {data && (
             <div>
@@ -80,11 +106,14 @@ export default function SingleProductPage() {
               <h2>{data.title}</h2>
               <p>€ {data.price}</p>
               <AddToCart id={data.id} />
-              {isLoggedIn && admin && <UpdateProductForm product={data} />}
-              {isLoggedIn && admin && <RemoveProduct id={data.id} />}
             </div>
           )}
         </div>
+      </div>
+
+      <div className='py-12 grid md:grid-cols-2 gap-8'>
+        {data && isLoggedIn && admin && <UpdateProductForm product={data} />}
+        {data && isLoggedIn && admin && <RemoveProduct id={data.id} />}
       </div>
     </div>
   )

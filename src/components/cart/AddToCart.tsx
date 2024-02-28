@@ -89,7 +89,7 @@ export default function AddToCart({ id }: Props) {
       />
       <Button
         onClick={() => handleClick(id)}
-        color='light'
+        color='dark'
         pill
         className='text-nowrap'
       >

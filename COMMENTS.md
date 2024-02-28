@@ -22,3 +22,4 @@
 
 
 ## Product page
+This page shows all the products. It supports pagination. Each page container 12 items. 
