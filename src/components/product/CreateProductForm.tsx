@@ -2,6 +2,7 @@ import * as Yup from 'yup'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useNavigate } from 'react-router-dom'
+import { Button } from 'flowbite-react'
 
 import { CreateProductInput } from '../../misc/type'
 import {
@@ -49,18 +50,16 @@ export default function CreateProductForm() {
     })
   }
   return (
-    <div>
-      <h1>product form</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <div className='bg-gray-200 rounded-lg py-12 px-8 grid gap-4'>
+      <h4>Create a new product</h4>
+      <form onSubmit={handleSubmit(onSubmit)} className='grid gap-4 py-12'>
         <label htmlFor='title'>Title</label>
         <input {...register('title')} />
         {errors.title ? <div>{errors.title.message}</div> : null}
-
         <label htmlFor='price'>Price</label>
         <input {...register('price')} />
         {errors.price ? <div>{errors.price.message}</div> : null}
-
-        <label htmlFor='categoryId'>Id</label>
+        <label htmlFor='categoryId'>Choose a category</label>
         <select {...register('categoryId')}>
           {categories &&
             categories.map((cat) => {
@@ -68,13 +67,12 @@ export default function CreateProductForm() {
             })}
         </select>
         {errors.categoryId ? <div>{errors.categoryId.message}</div> : null}
-
-        <label htmlFor='description'>Des</label>
+        <label htmlFor='description'>Add a description</label>
         <textarea {...register('description')} />
         {errors.description ? <div>{errors.description.message}</div> : null}
-        <button type='submit' className='btn-submit'>
-          Send
-        </button>
+        <Button type='submit' color='dark' size='lg' pill>
+          Create
+        </Button>
       </form>
     </div>
   )

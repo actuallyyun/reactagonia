@@ -6,7 +6,6 @@ import UserRegisterForm from '../../components/user/UserRegisterForm'
 import UserLoginForm from '../../components/user/UserLoginForm'
 import styles from './account.module.css'
 
-type Action = 'login' | 'signup'
 
 export default function Auth() {
   const [hideLogin, setHideLogin] = useState('')

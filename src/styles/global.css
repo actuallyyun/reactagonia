@@ -15,6 +15,9 @@
   h3 {
     @apply text-3xl font-bold dark:text-white
   }
+  h4 {
+    @apply text-2xl font-bold dark:text-white
+  }
 
   code {
     @apply font-mono;

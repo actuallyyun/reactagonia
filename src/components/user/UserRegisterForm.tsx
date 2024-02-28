@@ -34,7 +34,7 @@ const UserRegisterForm: React.FC<{}> = () => {
   const [addUser, { data, error, isLoading }] = useRegisterMutation()
 
   if (!error && data) {
-    setTimeout(() => nagivate('/login'), 3000)
+    setTimeout(() => nagivate('/auth'), 3000)
   }
 
   const {

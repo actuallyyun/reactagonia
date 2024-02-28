@@ -13,6 +13,6 @@ module.exports = {
       margin: '1rem'
     }
   },
-  plugins: [],
+  plugins: [require('flowbite-typography')],
   darkMode: 'class'
 }

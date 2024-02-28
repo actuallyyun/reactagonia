@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react'
 import Home from './pages/home/Home'
-import { Routes, Route, Navigate, Outlet, Link } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 
-import Shop from './pages/products/Shop'
 import Profile from './pages/account/Profile'
 import Cart from './pages/cart/Cart'
 import SingleProductPage from './pages/product/SingleProductPage'
@@ -11,7 +10,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import { AppState } from './app/store'
 import PrivateRoute from './components/PrivateRoute'
 import Auth from './pages/account/Auth'
-import Login from './pages/account/Login'
 import {
   useGetUserQuery,
   useLoginMutation,
@@ -38,7 +36,7 @@ function App() {
   return (
     <div className='container'>
       <Nav />
-      <div className=''>
+      <div className='container mx-4 md:mx-16'>
         <Routes>
           <Route path='/' element={<Home />}></Route>
           <Route path='/shop' element={<Navigate to={'/'} />}></Route>
