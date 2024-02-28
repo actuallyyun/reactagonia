@@ -17,6 +17,7 @@ import {
 } from './services/auth'
 import { selectCurrentUser } from './components/user/userSlice'
 import Nav from './components/header/Header'
+import Products from './components/product/Products'
 
 function App() {
   const [refreshToken] = useGetRefreshTokenMutation()
@@ -36,11 +37,11 @@ function App() {
   return (
     <div className='container'>
       <Nav />
-      <div className='container mx-4 md:mx-16'>
+      <div className='mx-4 md:mx-16 py-8 md:py-12'>
         <Routes>
           <Route path='/' element={<Home />}></Route>
           <Route path='/shop' element={<Navigate to={'/'} />}></Route>
-          <Route path='/product' element={<Navigate to={'/'} />}></Route>
+          <Route path='/product' element={<Products />}></Route>
           <Route path='/product/:productId' element={<SingleProductPage />} />
           <Route path='/shop/:categoryId' element={<CategoryPage />} />
           <Route

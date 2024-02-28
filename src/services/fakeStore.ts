@@ -6,8 +6,11 @@ const fakeStoreApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: 'https://api.escuelajs.co/api/v1' }),
   tagTypes: ['Products', 'Product', 'Category'],
   endpoints: (builder) => ({
-    getAllProducts: builder.query<Product[], void>({
-      query: () => ({ url: '/products', method: 'GET' }),
+    getAllProducts: builder.query<Product[], number>({
+      query: (page) => ({
+        url: `/products?offset=${page - 1}&limit=12`,
+        method: 'GET'
+      }),
       providesTags: [{ type: 'Products' }]
     }),
     getSingleProduct: builder.query<Product, number>({

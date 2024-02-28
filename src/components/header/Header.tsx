@@ -39,8 +39,8 @@ const CategoryModal = ({ openModal, setOpenModal }: ModalProps) => {
 }
 
 export default function Nav() {
-  const { isLoggedIn, token } = useSelector((state: AppState) => state.user)
-  const { data, error } = useGetUserQuery()
+  const { isLoggedIn } = useSelector((state: AppState) => state.user)
+  const { data, error, isLoading } = useGetUserQuery()
   const [openModal, setOpenModal] = useState(false)
 
   const dispatch = useDispatch()
@@ -50,16 +50,14 @@ export default function Nav() {
   }
 
   return (
-    <Navbar fluid rounded className='px-4 md:px-16 z-50 pt-4'>
+    <Navbar fluid rounded className='z-50 pt-6'>
       <Navbar.Collapse>
-        <Navbar.Link href='/' active>
-          Home
-        </Navbar.Link>
-        <Navbar.Link>
+        <Navbar.Link className='text-xl'>
           <button onClick={() => setOpenModal(true)}>Shop</button>
         </Navbar.Link>
-
-        <Navbar.Link href='/shop'>All</Navbar.Link>
+        <Navbar.Link href='/product' className='text-xl'>
+          All
+        </Navbar.Link>
       </Navbar.Collapse>
       <Navbar.Brand href='/' className='flex gap-4'>
         <FaCat className='fill-purple-500' size={28} />
@@ -74,12 +72,12 @@ export default function Nav() {
           <button onClick={() => setOpenModal(true)}>Shop</button>
           <CategoryModal openModal={openModal} setOpenModal={setOpenModal} />
         </div>
-        <a href='/cart'>
-          <BsBag size={18} />
+        <a href='/cart' className='flex flex-col justify-center'>
+          <BsBag size={22} />
         </a>
         {!isLoggedIn && (
-          <a href='/account'>
-            <FaRegUser size={16} />
+          <a href='/account' className='flex flex-col justify-center'>
+            <FaRegUser size={22} />
           </a>
         )}
         {isLoggedIn && (

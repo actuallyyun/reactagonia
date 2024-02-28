@@ -1,4 +1,4 @@
-# Pages
+# Pages Overview
 
 - Home "./"
 - Auth './auth'
@@ -19,3 +19,6 @@
 ### TODO
 - Add signup with Google option
 - Feedback for user when filling the forms correctly 
+
+
+## Product page
