@@ -1,7 +1,6 @@
 import { useSelector } from 'react-redux'
 import { selectAllCategories } from '../category/categorySlice'
 import { Link } from 'react-router-dom'
-import { Button } from 'flowbite-react'
 
 import catImg from '../../images/pacto-visual-cWOzOnSoh6Q-unsplash.jpg'
 import styles from './styles.module.css'
@@ -9,7 +8,7 @@ import styles from './styles.module.css'
 export default function HeroWithImage() {
   const categories = useSelector(selectAllCategories)
   return (
-    <section className='bg-white dark:bg-gray-900'>
+    <section className='bg-white dark:bg-black'>
       <div className='grid px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 grid-cols-12'>
         <div className={`${styles.hero_content} grid place-content-around	`}>
           <div

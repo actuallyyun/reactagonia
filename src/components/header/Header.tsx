@@ -13,9 +13,12 @@ import { logOut } from '../user/userSlice'
 import logo from '../../images/logo.png'
 import { selectAllCategories } from '../category/categorySlice'
 import { ModalProps } from '../cart/AddToCart'
+import ThemeToggle from './ThemeToggle'
+import { useTheme, ThemeContextType } from '../../services/ThemeContext'
 
 const CategoryModal = ({ openModal, setOpenModal }: ModalProps) => {
   const categories = useSelector(selectAllCategories)
+
   return (
     <Modal
       show={openModal}
@@ -50,33 +53,36 @@ export default function Nav() {
   }
 
   return (
-    <Navbar fluid rounded className='z-50 pt-6'>
+    <Navbar fluid rounded className='z-50 pt-6  dark:bg-black'>
       <Navbar.Collapse>
-        <Navbar.Link className='text-xl'>
+        <Navbar.Link className='text-xl dark:text-white'>
           <button onClick={() => setOpenModal(true)}>Shop</button>
         </Navbar.Link>
-        <Navbar.Link href='/product' className='text-xl'>
+        <Navbar.Link href='/product' className='text-xl dark:text-white'>
           All
         </Navbar.Link>
       </Navbar.Collapse>
       <Navbar.Brand href='/' className='flex gap-4'>
         <FaCat className='fill-purple-500' size={28} />
-        <span className='hidden'>Catagonia Home page</span>
-        <figure aria-hidden='true'>
-          <img src={logo} alt='Catagonia logo' width='150px' />
-        </figure>
+        <h2 className='text-black dark:text-white'>Catagonia</h2>
       </Navbar.Brand>
 
       <div className='flex md:order-2 gap-8'>
-        <div className='md:hidden'>
+        <div className='md:hidden dark:text-white flex flex-col justify-center'>
           <button onClick={() => setOpenModal(true)}>Shop</button>
           <CategoryModal openModal={openModal} setOpenModal={setOpenModal} />
         </div>
-        <a href='/cart' className='flex flex-col justify-center'>
+        <a
+          href='/cart'
+          className='flex flex-col justify-center dark:text-white'
+        >
           <BsBag size={22} />
         </a>
         {!isLoggedIn && (
-          <a href='/account' className='flex flex-col justify-center'>
+          <a
+            href='/account'
+            className='flex flex-col justify-center dark:text-white'
+          >
             <FaRegUser size={22} />
           </a>
         )}
@@ -97,6 +103,7 @@ export default function Nav() {
             <Dropdown.Item onClick={handleLogOut}>Sign out</Dropdown.Item>
           </Dropdown>
         )}
+        <ThemeToggle />
       </div>
       <CategoryModal openModal={openModal} setOpenModal={setOpenModal} />
     </Navbar>

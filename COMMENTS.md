@@ -17,9 +17,17 @@
 - After login, user is redirected to account page.
 
 ### TODO
-- Add signup with Google option
-- Feedback for user when filling the forms correctly 
+- [] Add signup with Google option
+- [] Feedback for user when filling the forms correctly 
 
 
 ## Product page
 This page shows all the products. It supports pagination. Each page container 12 items. 
+
+### TODO
+- [] Add title search
+
+## Testing
+### TODO
+- [] Test product RTK query
+- [] Test private routes
