@@ -76,3 +76,16 @@ export type UpdateProductInput = {
 export type UpdateProductRequest = UpdateProductInput & { id: number }
 
 
+export type QueryFilters =
+  | 'title'
+  | 'price_min'
+  | 'price_max'
+  | 'categoryId'
+  | 'offset'
+  | 'limit'
+
+  export type QueryParam = {
+    type: QueryFilters
+    value: string
+  }
+  export type QueryParams = QueryParam[]

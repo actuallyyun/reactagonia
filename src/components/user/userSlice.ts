@@ -2,7 +2,6 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { UserAuthToken, User, UserInfo } from '../../misc/type'
 import { AppState } from '../../app/store'
 import { authApi } from '../../services/auth'
-import { truncateSync } from 'fs'
 
 const userInStorage = localStorage.getItem('userAuth')
 const userAuthToken = userInStorage ? JSON.parse(userInStorage) : null

@@ -1,14 +1,21 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { Category, Product, UpdateProductRequest } from '../misc/type'
+import {
+  Category,
+  Product,
+  UpdateProductRequest,
+  QueryFilters,
+  QueryParams
+} from '../misc/type'
+import { constructQueryUrl } from '../misc/utils'
 
 const fakeStoreApi = createApi({
   reducerPath: 'fakeStoreApi',
   baseQuery: fetchBaseQuery({ baseUrl: 'https://api.escuelajs.co/api/v1' }),
   tagTypes: ['Products', 'Product', 'Category'],
   endpoints: (builder) => ({
-    getAllProducts: builder.query<Product[], number>({
-      query: (page) => ({
-        url: `/products?offset=${page - 1}&limit=12`,
+    getAllProducts: builder.query<Product[], QueryParams | null>({
+      query: (param) => ({
+        url: `/products?${constructQueryUrl(param)}`,
         method: 'GET'
       }),
       providesTags: [{ type: 'Products' }]
@@ -64,7 +71,6 @@ const fakeStoreApi = createApi({
       }),
       providesTags: ['Category'],
       transformResponse: (response: Product[], meta, arg) => {
-        console.log({ response })
         if (arg.sortBy === 'ascending') {
           return response.sort((a, b) => a.price - b.price)
         }

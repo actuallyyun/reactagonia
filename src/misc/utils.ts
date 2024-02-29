@@ -1,14 +1,5 @@
-import { Product } from './type'
+import { Product, QueryParams, QueryParam } from './type'
 
-//export const getUniqueValues = (array: object[]) =>
-//  array
-//    .map((e) => JSON.stringify(e))
-//    .filter((currentValue, index, arr) => arr.indexOf(currentValue) === index)
-//    .map((e) => JSON.parse(e))
-
-//  unique = [...new Set(list.map((o) => JSON.stringify(o)))].map((s) =>
-//  JSON.parse(s)
-//);
 export const getCategories = (products: Product[]) => {
   return products
     .map((product) => product.category)
@@ -41,4 +32,33 @@ export const imageBaseUrl = ''
 export const generateRandomImage = () => {
   const randomId = Math.floor(Math.random() * 200)
   return `https://picsum.photos/id/${randomId}/640/480`
+}
+
+export const constructQueryUrl = (param: QueryParams | null) => {
+  const paramArray = param
+    ? param.map((param) => `${param.type}=${param.value}&`)
+    : ['']
+  return paramArray.join('')
+}
+
+export const urlParser = (url: string) => {
+  const params = url
+    .split('?')[1]
+    .split('&')
+    .map((p) => p.split('='))
+  return Object.fromEntries(params)
+}
+
+export const setParams = (
+  prev: QueryParams,
+  param: QueryParam
+): QueryParams => {
+  const types = prev.map((p) => p.type)
+  if (types.includes(param.type)) {
+    return prev.map((p) => {
+      return p.type === param.type ? { ...p, value: param.value } : p
+    })
+  } else {
+    return [...prev, param]
+  }
 }

@@ -385,11 +385,13 @@ video {
 [hidden] {
   display: none;
 }
+
   h1 {
   font-size: 3rem;
   line-height: 1;
   font-weight: 800;
 }
+
   :is(.dark h1) {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));

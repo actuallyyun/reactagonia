@@ -6,9 +6,10 @@ import {
   CreateProductRequest,
   UserAuthToken,
   UserLoginRequest,
-  UserInfo
+  UserInfo,
+  QueryParams
 } from '../misc/type'
-import { isTypeAliasDeclaration } from 'typescript'
+import { urlParser } from '../misc/utils'
 
 export const mockAuthToken: UserAuthToken = {
   access_token: 'access',
@@ -95,6 +96,98 @@ export const mockProducts: Product[] = [
   }
 ]
 
+const mockProductsPaged = [
+  {
+    id: 255,
+    title: 'de',
+    price: 120000,
+    description: 'ddddddddddd',
+    images: [
+      'https://placeimg.com/640/480/any',
+      'https://placeimg.com/640/480/any'
+    ],
+    creationAt: '2024-02-29T14:45:15.000Z',
+    updatedAt: '2024-02-29T14:52:59.000Z',
+    category: {
+      id: 1,
+      name: 'Clothes',
+      image: 'https://i.imgur.com/QkIa5tT.jpeg',
+      creationAt: '2024-02-29T03:37:26.000Z',
+      updatedAt: '2024-02-29T03:37:26.000Z'
+    }
+  },
+  {
+    id: 256,
+    title: 'frio',
+    price: 12,
+    description: 'dddddddddd',
+    images: [
+      'https://placeimg.com/640/480/any',
+      'https://placeimg.com/640/480/any'
+    ],
+    creationAt: '2024-02-29T14:45:58.000Z',
+    updatedAt: '2024-02-29T14:45:58.000Z',
+    category: {
+      id: 1,
+      name: 'Clothes',
+      image: 'https://i.imgur.com/QkIa5tT.jpeg',
+      creationAt: '2024-02-29T03:37:26.000Z',
+      updatedAt: '2024-02-29T03:37:26.000Z'
+    }
+  },
+  {
+    id: 257,
+    title: 'New Product Course',
+    price: 122,
+    description: 'A description',
+    images: ['https://placeimg.com/640/480/any'],
+    creationAt: '2024-02-29T14:48:24.000Z',
+    updatedAt: '2024-02-29T14:48:24.000Z',
+    category: {
+      id: 1,
+      name: 'Clothes',
+      image: 'https://i.imgur.com/QkIa5tT.jpeg',
+      creationAt: '2024-02-29T03:37:26.000Z',
+      updatedAt: '2024-02-29T03:37:26.000Z'
+    }
+  },
+  {
+    id: 258,
+    title: 'New Product Course',
+    price: 122,
+    description: 'A description',
+    images: ['https://placeimg.com/640/480/any'],
+    creationAt: '2024-02-29T14:48:35.000Z',
+    updatedAt: '2024-02-29T14:48:35.000Z',
+    category: {
+      id: 1,
+      name: 'Clothes',
+      image: 'https://i.imgur.com/QkIa5tT.jpeg',
+      creationAt: '2024-02-29T03:37:26.000Z',
+      updatedAt: '2024-02-29T03:37:26.000Z'
+    }
+  },
+  {
+    id: 259,
+    title: 'Juegos',
+    price: 10,
+    description: 'ssssssssssssssssss',
+    images: [
+      'https://placeimg.com/640/480/any',
+      'https://placeimg.com/640/480/any'
+    ],
+    creationAt: '2024-02-29T14:48:37.000Z',
+    updatedAt: '2024-02-29T14:48:37.000Z',
+    category: {
+      id: 1,
+      name: 'Clothes',
+      image: 'https://i.imgur.com/QkIa5tT.jpeg',
+      creationAt: '2024-02-29T03:37:26.000Z',
+      updatedAt: '2024-02-29T03:37:26.000Z'
+    }
+  }
+]
+
 const mockCategories = [
   {
     id: 1,
@@ -114,9 +207,21 @@ const mockCategories = [
 ]
 
 export const handler = [
-  http.get('https://api.escuelajs.co/api/v1/products', () => {
-    return HttpResponse.json(mockProducts, { status: 200 })
-  }),
+  http.get(
+    'https://api.escuelajs.co/api/v1/products',
+    ({ request, params }) => {
+      const url = request.url
+      if (url.includes('title')) {
+        const title = urlParser(url)['title']
+        return HttpResponse.json(
+          mockProductsPaged.filter((p) => p.title.includes(title))
+        )
+      }
+
+      return HttpResponse.json(mockProductsPaged, { status: 200 })
+    }
+  ),
+
   http.get('https://api.escuelajs.co/api/v1/categories', () => {
     return HttpResponse.json(mockCategories)
   }),

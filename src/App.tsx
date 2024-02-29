@@ -4,7 +4,7 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 
 import Profile from './pages/account/Profile'
 import Cart from './pages/cart/Cart'
-import SingleProductPage from './pages/product/SingleProductPage'
+import SingleProductPage from './pages/products/SingleProductPage'
 import CategoryPage from './pages/category/CategoryPage'
 import { useSelector } from 'react-redux'
 import { AppState } from './app/store'
@@ -12,7 +12,7 @@ import PrivateRoute from './components/PrivateRoute'
 import Auth from './pages/account/Auth'
 import { useGetRefreshTokenMutation } from './services/auth'
 import Nav from './components/header/Header'
-import Products from './components/product/Products'
+import Products from './pages/products/Products'
 import { useTheme } from './services/ThemeContext'
 
 function App() {

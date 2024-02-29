@@ -16,7 +16,6 @@ export default function ProductCard({ product }: ProductCardProp) {
 
   return (
     <>
-      {' '}
       <Card
         className='max-w-sm'
         imgAlt='Apple Watch Series 7 in colors pink, silver, and black'

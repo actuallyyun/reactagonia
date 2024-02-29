@@ -1,4 +1,12 @@
-import { cleanImageUrl, generateRandomImage } from './utils'
+import { stringify } from 'querystring'
+import {
+  cleanImageUrl,
+  constructQueryUrl,
+  generateRandomImage,
+  urlParser,
+  setParams
+} from './utils'
+import { QueryParams, QueryParam } from '../misc/type'
 
 describe('clean image url', () => {
   test('should return original url', () => {
@@ -31,5 +39,79 @@ describe('generate random image', () => {
     const res = generateRandomImage()
     expect(res.slice(0, 5)).toBe('https')
     expect(res.includes('id')).toBeTruthy()
+  })
+})
+
+describe('contruct query url', () => {
+  test('pass null should return empty string', () => {
+    const res = constructQueryUrl(null)
+    expect(res).toEqual('')
+  })
+  test('pass one param should return correct string', () => {
+    const res = constructQueryUrl([
+      {
+        type: 'offset',
+        value: '0'
+      }
+    ])
+    expect(res).toEqual('offset=0&')
+  })
+  test('pass two param should return correct string', () => {
+    const res = constructQueryUrl([
+      {
+        type: 'offset',
+        value: '0'
+      },
+      {
+        type: 'limit',
+        value: '12'
+      }
+    ])
+    expect(res).toEqual('offset=0&limit=12&')
+  })
+})
+
+test('url parser', () => {
+  expect(
+    stringify(
+      urlParser(
+        'https://api.escuelajs.co/api/v1/products/?price_min=100&price_max=1000&offset=10&limit=10'
+      )
+    )
+  ).toBe(
+    stringify({
+      price_min: '100',
+      price_max: '1000',
+      offset: '10',
+      limit: '10'
+    })
+  )
+})
+describe('setParams', () => {
+  test('should push param to empty prev', () => {
+    const prev: QueryParams = []
+    const param: QueryParam = { type: 'title', value: 'apple' }
+    const res = setParams(prev, param)
+    expect(res[0]).toMatchObject(param)
+  })
+  test('should not add duplicated param type', () => {
+    const prev: QueryParams = [
+      { type: 'title', value: 'apple' },
+      { type: 'offset', value: '5' }
+    ]
+    const param: QueryParam = { type: 'title', value: 'orange' }
+    const res = setParams(prev, param)
+    expect(res[0]).toMatchObject(param)
+    expect(res[1]).toMatchObject({ type: 'offset', value: '5' })
+  })
+  test('should  add new param type', () => {
+    const prev: QueryParams = [
+      { type: 'title', value: 'apple' },
+      { type: 'offset', value: '5' }
+    ]
+    const param: QueryParam = { type: 'limit', value: '10' }
+    const res = setParams(prev, param)
+    expect(res[1]).toMatchObject({ type: 'offset', value: '5' })
+    expect(res[2]).toMatchObject(param)
   })
 })
