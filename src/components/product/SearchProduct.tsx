@@ -1,5 +1,6 @@
 import { TextInput, Button } from 'flowbite-react'
 import { useState } from 'react'
+import { useDebouncedCallback } from 'use-debounce'
 
 import { QueryParams } from '../../misc/type'
 import { setParams } from '../../misc/utils'
@@ -13,13 +14,15 @@ export default function SearchProduct({ setQuery }: Props) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput((prev) => (prev = e.target.value))
   }
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault()
-
+  const debounced = useDebouncedCallback(() => {
     setQuery(
       (prev) => (prev = setParams(prev, { type: 'title', value: searchInput }))
     )
+  }, 1000)
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault()
+    debounced()
   }
   return (
     <div className='grid md:grid-cols-3 space-between gap-4' role='search'>
