@@ -7,6 +7,10 @@ import reportWebVitals from './reportWebVitals'
 import { Provider } from 'react-redux'
 import store from './app/store'
 import ThemeProvider from './services/ThemeContext'
+import { GoogleOAuthProvider } from '@react-oauth/google'
+import { SnackbarProvider } from 'notistack'
+
+const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID as string
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
@@ -15,7 +19,11 @@ root.render(
     <BrowserRouter>
       <Provider store={store}>
         <ThemeProvider>
-          <App />
+          <SnackbarProvider autoHideDuration={3000}>
+            <GoogleOAuthProvider clientId={clientId}>
+              <App />
+            </GoogleOAuthProvider>
+          </SnackbarProvider>
         </ThemeProvider>
       </Provider>
     </BrowserRouter>

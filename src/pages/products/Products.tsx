@@ -1,14 +1,13 @@
-import { Link } from 'react-router-dom'
 import { useState } from 'react'
 
 import { useGetAllProductsQuery } from '../../services/fakeStore'
-import { Product } from '../../misc/type'
+import { Feedback, Product } from '../../misc/type'
 import ProductCard from '../../components/product/ProductCard'
 import { PaginationNav } from '../../components/tailwindComponents/Pagination'
 import SearchProduct from '../../components/product/SearchProduct'
 import { QueryParams } from '../../misc/type'
 
-export default function Products() {
+export default function Products({ feedback }: { feedback: Feedback }) {
   const [query, setQuery] = useState<QueryParams>([
     {
       type: 'offset',
@@ -21,6 +20,9 @@ export default function Products() {
   ])
 
   const { data, error, isLoading } = useGetAllProductsQuery(query)
+  if (error) {
+    feedback.handleError(error)
+  }
 
   return (
     <div className='grid justify-center gap-8'>

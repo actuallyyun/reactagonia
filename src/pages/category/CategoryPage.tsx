@@ -1,13 +1,13 @@
-import { useParams, Link } from 'react-router-dom'
-import { UseSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
 
 import { useGetProductsByCategoryQuery } from '../../services/fakeStore'
 import ProductCard from '../../components/product/ProductCard'
 import SortByPrice from '../../components/category/SortByPrice'
 import { useSelector } from 'react-redux'
 import { AppState } from '../../app/store'
+import { Feedback } from '../../misc/type'
 
-export default function CategoryPage() {
+export default function CategoryPage({ feedback }: { feedback: Feedback }) {
   const { categoryId } = useParams()
   const sortBy = useSelector((state: AppState) => state.category.sortBy)
 
@@ -15,6 +15,9 @@ export default function CategoryPage() {
     categoryId: Number(categoryId),
     sortBy
   })
+  if (error) {
+    feedback.handleError(error)
+  }
 
   return (
     <div className='container mx-auto px-4 md:px-16 py-8'>

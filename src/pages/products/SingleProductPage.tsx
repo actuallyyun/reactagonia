@@ -14,28 +14,30 @@ import { AppState } from '../../app/store'
 import UpdateProductForm from '../../components/product/UpdateProductForm'
 import { isAdmin } from '../../components/user/userSlice'
 import CustomBreadcrumb from '../../components/tailwindComponents/CustomBreadcrumb'
-import {
-  SuccessTooltip,
-  FailureTooltip
-} from '../../components/tailwindComponents/Tooltips'
+import { Feedback } from '../../misc/type'
 
-const RemoveProduct = ({ id }: { id: number }) => {
-  const [status, setStatus] = useState<string>('')
-
+const RemoveProduct = ({
+  id,
+  feedback
+}: {
+  id: number
+  feedback: Feedback
+}) => {
   const nav = useNavigate()
-  const [deleteProduct, { data, error }] = useDeleteProductMutation()
-  const handleRemove = (id: number) => {
-    deleteProduct(id)
+  const [deleteProduct] = useDeleteProductMutation()
+  const handleRemove = async (id: number) => {
+    try {
+      const payload = await deleteProduct(id).unwrap()
+      if (payload) {
+        feedback.handleSuccess('Product delete successfully.')
+        setTimeout(() => nav('./'), 2000)
+      } else {
+        feedback.handleError('Unkown error')
+      }
+    } catch (err) {
+      feedback.handleError(err)
+    }
   }
-  useEffect(() => {
-    if (data) {
-      setStatus((prev) => (prev = 'success'))
-      setTimeout(() => nav('/'), 2000)
-    }
-    if (error) {
-      setStatus((prev) => (prev = 'failure'))
-    }
-  }, [data, error])
 
   return (
     <div className='grid gap-4  bg-gray-200 rounded-lg py-12 px-8'>
@@ -43,12 +45,7 @@ const RemoveProduct = ({ id }: { id: number }) => {
       <p>
         Once the product is removed, you will not be able to access it any more.
       </p>
-      <div className={status === 'success' ? 'block' : 'hidden'}>
-        <SuccessTooltip message='Product removed successfully.' />
-      </div>
-      <div className={status === 'failure' ? 'block' : 'hidden'}>
-        <FailureTooltip message='Product not removed successfully.' />
-      </div>
+
       <Button onClick={() => handleRemove(id)} color='warning' pill>
         Remove
       </Button>
@@ -73,11 +70,18 @@ function ProductCarousel({ images }: { images: string[] }) {
   )
 }
 
-export default function SingleProductPage() {
+export default function SingleProductPage({
+  feedback
+}: {
+  feedback: Feedback
+}) {
   const admin = useSelector(isAdmin)
   const { productId } = useParams()
 
   const { data, error, isLoading } = useGetSingleProductQuery(Number(productId))
+  if (error) {
+    feedback.handleError(error)
+  }
   const { isLoggedIn } = useSelector((state: AppState) => state.user)
 
   return (
@@ -112,8 +116,12 @@ export default function SingleProductPage() {
       </div>
 
       <div className='py-12 grid md:grid-cols-2 gap-8'>
-        {data && isLoggedIn && admin && <UpdateProductForm product={data} />}
-        {data && isLoggedIn && admin && <RemoveProduct id={data.id} />}
+        {data && isLoggedIn && admin && (
+          <UpdateProductForm product={data} feedback={feedback} />
+        )}
+        {data && isLoggedIn && admin && (
+          <RemoveProduct id={data.id} feedback={feedback} />
+        )}
       </div>
     </div>
   )

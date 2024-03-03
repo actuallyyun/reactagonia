@@ -89,3 +89,22 @@ export type QueryFilters =
     value: string
   }
   export type QueryParams = QueryParam[]
+
+
+
+  export type GoogleLoginResponse = {
+    email: string
+
+    family_name: string
+    given_name: string
+    id: string
+    locale: string
+    name: string
+    picture: string
+    verified_email: Boolean
+  }
+
+  export type Feedback = {
+    handleError: (err: any) => void
+    handleSuccess: (message: string) => void
+  }

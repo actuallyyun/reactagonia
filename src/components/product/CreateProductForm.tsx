@@ -4,7 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useNavigate } from 'react-router-dom'
 import { Button } from 'flowbite-react'
 
-import { CreateProductInput } from '../../misc/type'
+import { CreateProductInput, Feedback } from '../../misc/type'
 import {
   useGetCategoriesQuery,
   useCreateProductMutation
@@ -27,15 +27,17 @@ const createProductSchema = Yup.object().shape({
   categoryId: Yup.number().min(1).required()
 })
 
-export default function CreateProductForm() {
+export default function CreateProductForm({
+  feedback
+}: {
+  feedback: Feedback
+}) {
   useGetCategoriesQuery()
   const categories = useSelector(selectAllCategories)
 
   const navigate = useNavigate()
-  const [creatProduct, { data, error, isLoading }] = useCreateProductMutation()
-  if (data && !error) {
-    navigate(`/product/${data.id}`)
-  }
+  const [creatProduct] = useCreateProductMutation()
+
   const {
     register,
     handleSubmit,
@@ -43,11 +45,21 @@ export default function CreateProductForm() {
   } = useForm({
     resolver: yupResolver(createProductSchema)
   })
-  const onSubmit = (data: CreateProductInput) => {
-    creatProduct({
-      ...data,
-      images: defaultImage
-    })
+  const onSubmit = async (data: CreateProductInput) => {
+    try {
+      const payload = await creatProduct({
+        ...data,
+        images: defaultImage
+      }).unwrap()
+      if (payload) {
+        feedback.handleSuccess('Product created successfully.')
+        setTimeout(() => navigate(`/product/${payload.id}`), 2000)
+      } else {
+        feedback.handleError('unkown error')
+      }
+    } catch (err) {
+      feedback.handleError(err)
+    }
   }
   return (
     <div className='bg-gray-200 rounded-lg py-12 px-8 grid gap-4'>

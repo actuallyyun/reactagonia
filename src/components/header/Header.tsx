@@ -7,14 +7,11 @@ import { Link } from 'react-router-dom'
 import { Modal } from 'flowbite-react'
 import { useState } from 'react'
 
-import { useGetUserQuery } from '../../services/auth'
 import { AppState } from '../../app/store'
 import { logOut } from '../user/userSlice'
-import logo from '../../images/logo.png'
 import { selectAllCategories } from '../category/categorySlice'
 import { ModalProps } from '../cart/AddToCart'
 import ThemeToggle from './ThemeToggle'
-import { useTheme, ThemeContextType } from '../../services/ThemeContext'
 
 const CategoryModal = ({ openModal, setOpenModal }: ModalProps) => {
   const categories = useSelector(selectAllCategories)
@@ -31,7 +28,11 @@ const CategoryModal = ({ openModal, setOpenModal }: ModalProps) => {
         <div className='grid gap-2'>
           {categories &&
             categories.map((cate) => (
-              <Link to={`/shop/${cate.id}`} onClick={() => setOpenModal(false)}>
+              <Link
+                key={cate.id}
+                to={`/shop/${cate.id}`}
+                onClick={() => setOpenModal(false)}
+              >
                 {cate.name}
               </Link>
             ))}
@@ -42,8 +43,8 @@ const CategoryModal = ({ openModal, setOpenModal }: ModalProps) => {
 }
 
 export default function Nav() {
-  const { isLoggedIn } = useSelector((state: AppState) => state.user)
-  const { data, error, isLoading } = useGetUserQuery()
+  const { isLoggedIn, user } = useSelector((state: AppState) => state.user)
+
   const [openModal, setOpenModal] = useState(false)
 
   const dispatch = useDispatch()
@@ -90,12 +91,12 @@ export default function Nav() {
           <Dropdown
             arrowIcon={false}
             inline
-            label={<Avatar alt='User settings' img={data?.avatar} rounded />}
+            label={<Avatar alt='User settings' img={user?.avatar} rounded />}
           >
             <Dropdown.Header>
-              <span className='block text-sm'>{data?.name}</span>
+              <span className='block text-sm'>{user?.name}</span>
               <span className='block truncate text-sm font-medium'>
-                {data?.email}
+                {user?.email}
               </span>
             </Dropdown.Header>
             <Dropdown.Item href='/account'>Account</Dropdown.Item>

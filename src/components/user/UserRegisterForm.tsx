@@ -4,13 +4,8 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useNavigate } from 'react-router-dom'
 import { Label, TextInput, Button } from 'flowbite-react'
 
-import { UserRegister } from '../../misc/type'
+import { Feedback, UserRegister } from '../../misc/type'
 import { useRegisterMutation } from '../../services/auth'
-import {
-  ShowLoading,
-  handleFetchBaseQueryError,
-  ShowFeedback
-} from '../utils/feedback'
 
 const SignupSchema = Yup.object().shape({
   name: Yup.string()
@@ -28,14 +23,10 @@ const SignupSchema = Yup.object().shape({
     .default('https://picsum.photos/800')
 })
 
-const UserRegisterForm: React.FC<{}> = () => {
+const UserRegisterForm = ({ feedback }: { feedback: Feedback }) => {
   const nagivate = useNavigate()
-
-  const [addUser, { data, error, isLoading }] = useRegisterMutation()
-
-  if (!error && data) {
-    setTimeout(() => nagivate('/auth'), 3000)
-  }
+  const [addUser] = useRegisterMutation()
+  const { handleError, handleSuccess } = feedback
 
   const {
     register,
@@ -44,8 +35,18 @@ const UserRegisterForm: React.FC<{}> = () => {
   } = useForm({
     resolver: yupResolver(SignupSchema)
   })
-  const onSubmit = (data: UserRegister) => {
-    addUser(data)
+  const onSubmit = async (data: UserRegister) => {
+    try {
+      const payload = await addUser(data).unwrap()
+      if (payload) {
+        handleSuccess('Thank you for creating an account!')
+        setTimeout(() => nagivate('/auth'), 3000)
+      } else {
+        handleError('unkown error')
+      }
+    } catch (err) {
+      handleError(err)
+    }
   }
 
   return (
@@ -104,14 +105,6 @@ const UserRegisterForm: React.FC<{}> = () => {
             </>
           }
         />
-        {error && handleFetchBaseQueryError(error)}
-        {isLoading && <ShowLoading />}
-        {!isLoading && data && (
-          <ShowFeedback
-            state='success'
-            message='Sign up successfully. You will be redirected to login page.'
-          />
-        )}
         <p>
           Please read our Privacy Notice for how we process your personal data
           and how you can exercise your privacy rights.

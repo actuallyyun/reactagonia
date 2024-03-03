@@ -5,6 +5,7 @@ import store from '../../app/store'
 import fakeStoreApi from '../../services/fakeStore'
 import { renderWithProviders } from '../../tests/utils'
 import Products from './Products'
+import { Feedback } from '../../misc/type'
 
 beforeAll(() => server.listen())
 
@@ -14,8 +15,13 @@ afterEach(() => server.resetHandlers())
 // Disable API mocking after the tests are done.
 afterAll(() => server.close())
 
+const feedback: Feedback = {
+  handleSuccess: jest.fn(),
+  handleError: jest.fn()
+}
+
 const setUp = async () => {
-  const utils = renderWithProviders(<Products />)
+  const utils = renderWithProviders(<Products feedback={feedback} />)
 
   const searchBtn = (await screen.findByLabelText(
     'product-search-button'

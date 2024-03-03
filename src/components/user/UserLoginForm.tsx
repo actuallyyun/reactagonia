@@ -1,11 +1,11 @@
 import * as Yup from 'yup'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useNavigate } from 'react-router-dom'
 
-import { useLoginMutation } from '../../services/auth'
+import { authApi, useLoginMutation } from '../../services/auth'
 import { Label, TextInput, Button } from 'flowbite-react'
-import { ShowLoading, handleFetchBaseQueryError } from '../utils/feedback'
+import store from '../../app/store'
+import { Feedback } from '../../misc/type'
 
 type UserSignUpRequest = {
   email: string
@@ -17,9 +17,12 @@ const loginSchema = Yup.object().shape({
   password: Yup.string().required('Password is required')
 })
 
-export default function UserLoginForm(): JSX.Element {
-  const navigate = useNavigate()
-  const [loginUser, { data, error, isLoading }] = useLoginMutation()
+export default function UserLoginForm({
+  feedback
+}: {
+  feedback: Feedback
+}): JSX.Element {
+  const [loginUser] = useLoginMutation()
 
   const {
     register,
@@ -29,10 +32,26 @@ export default function UserLoginForm(): JSX.Element {
     resolver: yupResolver(loginSchema)
   })
 
-  const onSubmit = async (data: UserSignUpRequest) => await loginUser(data)
-
-  if (!error && data) {
-    navigate('/account')
+  const onSubmit = async (req: UserSignUpRequest) => {
+    try {
+      const payload = await loginUser(req).unwrap()
+      if (payload) {
+        try {
+          const { error } = await store.dispatch(
+            authApi.endpoints.getUser.initiate()
+          )
+          if (error) {
+            feedback.handleError(error)
+          } else {
+            feedback.handleSuccess('Login successful.')
+          }
+        } catch (err) {
+          feedback.handleError(err)
+        }
+      }
+    } catch (err) {
+      feedback.handleError(err)
+    }
   }
 
   return (
@@ -73,8 +92,7 @@ export default function UserLoginForm(): JSX.Element {
             }
           />
         </div>
-        {error && handleFetchBaseQueryError(error)}
-        {isLoading && <ShowLoading />}
+
         <Button type='submit' gradientDuoTone='purpleToPink'>
           Login
         </Button>

@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import Home from './pages/home/Home'
 import { Routes, Route, Navigate } from 'react-router-dom'
+import { useSnackbar } from 'notistack'
 
 import Profile from './pages/account/Profile'
 import Cart from './pages/cart/Cart'
@@ -14,19 +15,44 @@ import { useGetRefreshTokenMutation } from './services/auth'
 import Nav from './components/header/Header'
 import Products from './pages/products/Products'
 import { useTheme } from './services/ThemeContext'
+import { isFetchBaseQueryError, isErrorWithMessage } from './services/helpers'
 
 function App() {
+  const { enqueueSnackbar } = useSnackbar()
+
   const [refreshToken] = useGetRefreshTokenMutation()
-  const { isLoggedIn, token } = useSelector((state: AppState) => state.user)
+  const { isLoggedIn, token, user } = useSelector(
+    (state: AppState) => state.user
+  )
 
   const { theme } = useTheme()
 
+  // When page loads, if user not loggedin, and no user, but token is present, attemp to
+  // refresh token.
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!isLoggedIn && !user && token) {
       refreshToken({ refreshToken: token?.refresh_token ?? '' })
     }
-  }, [token])
+  }, [])
 
+  function handleError(err: any): void {
+    if (isFetchBaseQueryError(err)) {
+      const errMsg = 'error' in err ? err.error : JSON.stringify(err.data)
+      enqueueSnackbar(errMsg, { variant: 'error' })
+    } else if (isErrorWithMessage(err)) {
+      enqueueSnackbar(err.message, { variant: 'error' })
+    } else {
+      enqueueSnackbar('unkown error', { variant: 'error' })
+    }
+  }
+  const handleSuccess = (message: string) => {
+    enqueueSnackbar(message, { variant: 'success' })
+  }
+
+  const feedback = {
+    handleError,
+    handleSuccess
+  }
   return (
     <div className={` ${theme} `}>
       <div className=' dark:bg-black'>
@@ -36,23 +62,35 @@ function App() {
             <Routes>
               <Route path='/' element={<Home />}></Route>
               <Route path='/shop' element={<Navigate to={'/'} />}></Route>
-              <Route path='/product' element={<Products />}></Route>
+              <Route
+                path='/product'
+                element={<Products feedback={feedback} />}
+              ></Route>
               <Route
                 path='/product/:productId'
-                element={<SingleProductPage />}
+                element={<SingleProductPage feedback={feedback} />}
               />
-              <Route path='/shop/:categoryId' element={<CategoryPage />} />
+              <Route
+                path='/shop/:categoryId'
+                element={<CategoryPage feedback={feedback} />}
+              />
               <Route
                 path='/account'
                 element={
                   <PrivateRoute>
-                    <Profile />
+                    <Profile feedback={feedback} />
                   </PrivateRoute>
                 }
               />
               <Route
                 path='/auth'
-                element={isLoggedIn ? <Navigate to={'/account'} /> : <Auth />}
+                element={
+                  isLoggedIn ? (
+                    <Navigate to={'/account'} />
+                  ) : (
+                    <Auth feedback={feedback} />
+                  )
+                }
               ></Route>
               <Route path='/cart' element={<Cart />}></Route>
             </Routes>

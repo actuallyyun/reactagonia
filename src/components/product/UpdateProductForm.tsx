@@ -1,20 +1,20 @@
 import { useForm } from 'react-hook-form'
 import { useSelector } from 'react-redux'
 import { Button } from 'flowbite-react'
-import { useState,useEffect } from 'react'
 
-import { Product, UpdateProductInput } from '../../misc/type'
+import { Feedback, Product, UpdateProductInput } from '../../misc/type'
 import { useUpdateProductMutation } from '../../services/fakeStore'
 import { isAdmin } from '../user/userSlice'
-import { SuccessTooltip, FailureTooltip } from '../tailwindComponents/Tooltips'
 
 type UpdateProductFormProp = {
   product: Product
+  feedback: Feedback
 }
 
-export default function UpdateProductForm({ product }: UpdateProductFormProp) {
-  const [status, setStatus] = useState<string>('')
-  console.log({ status })
+export default function UpdateProductForm({
+  product,
+  feedback
+}: UpdateProductFormProp) {
   const admin = useSelector(isAdmin)
   const { register, handleSubmit } = useForm<UpdateProductInput>({
     defaultValues: {
@@ -22,23 +22,23 @@ export default function UpdateProductForm({ product }: UpdateProductFormProp) {
       price: product.price
     }
   })
-  const [updateProduct, { data, error, isLoading }] = useUpdateProductMutation()
-  console.log({ data })
-  const onSubmit = (productInput: UpdateProductInput) => {
-    updateProduct({
-      ...productInput,
-      id: product.id
-    })
+  const [updateProduct] = useUpdateProductMutation()
 
+  const onSubmit = async (productInput: UpdateProductInput) => {
+    try {
+      const payload = await updateProduct({
+        ...productInput,
+        id: product.id
+      })
+      if (payload) {
+        feedback.handleSuccess('Update product successfully.')
+      } else {
+        feedback.handleError('unkown error')
+      }
+    } catch (err) {
+      feedback.handleError(err)
+    }
   }
-  useEffect(()=>{
-    if (data) {
-      setStatus((prev) => (prev = 'success'))
-    }
-    if (error) {
-      setStatus((prev) => (prev = 'failure'))
-    }
-  },[data,error])
 
   return (
     <>
@@ -53,12 +53,6 @@ export default function UpdateProductForm({ product }: UpdateProductFormProp) {
             <div className='flex gap-4 items-center'>
               <label>Price</label>
               <input {...register('price')} type='number' />
-            </div>
-            <div className={status === 'success' ? 'block' : 'hidden'}>
-              <SuccessTooltip message='Product updated successfully.' />
-            </div>
-            <div className={status === 'failure' ? 'block' : 'hidden'}>
-              <FailureTooltip message='Product not updated successfully.' />
             </div>
             <Button type='submit' color='success' pill>
               Update
