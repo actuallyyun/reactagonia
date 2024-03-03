@@ -3,8 +3,10 @@ import { UserAuthToken, User, UserInfo } from '../../misc/type'
 import { AppState } from '../../app/store'
 import { authApi } from '../../services/auth'
 
-const userInStorage = localStorage.getItem('userAuth')
-const userAuthToken = userInStorage ? JSON.parse(userInStorage) : null
+const userAuthInStorage = localStorage.getItem('userAuth')
+const userAuthToken = userAuthInStorage ? JSON.parse(userAuthInStorage) : null
+const userInStorage = localStorage.getItem('user')
+const user = userInStorage ? JSON.parse(userInStorage) : null
 
 export type InitialState = {
   user: UserInfo | null
@@ -14,10 +16,10 @@ export type InitialState = {
 }
 
 const initialState: InitialState = {
-  user: null,
+  user: user,
   token: userAuthToken,
-  isLoading: true,
-  isLoggedIn: false
+  isLoading: false,
+  isLoggedIn: user || userAuthToken ? true : false
 }
 
 const userSlice = createSlice({
@@ -26,13 +28,18 @@ const userSlice = createSlice({
   reducers: {
     setCredentials: (
       state,
-      action: PayloadAction<{ user: UserInfo | null; token: UserAuthToken }>
+      action: PayloadAction<{
+        user: UserInfo | null
+        token: UserAuthToken | null
+      }>
     ) => {
       const { user, token } = action.payload
       state.user = user
       state.token = token
       state.isLoading = false
       state.isLoggedIn = true
+      localStorage.setItem('userAuth', JSON.stringify(token) ?? '')
+      localStorage.setItem('user', JSON.stringify(user) ?? '')
     },
     logOut: (state, action: PayloadAction) => {
       state.user = null
@@ -40,6 +47,8 @@ const userSlice = createSlice({
       state.isLoading = false
       state.isLoggedIn = false
       localStorage.removeItem('userAuth')
+      localStorage.removeItem('user')
+      localStorage.removeItem('cart')
     }
   },
   extraReducers: (builder) => {
@@ -63,11 +72,18 @@ const userSlice = createSlice({
         }
       )
       .addMatcher(
+        authApi.endpoints.login.matchPending,
+        (state, { payload }) => {
+          state.isLoading = true
+        }
+      )
+      .addMatcher(
         authApi.endpoints.getUser.matchFulfilled,
         (state, { payload }) => {
           state.user = payload
           state.isLoggedIn = true
           state.isLoading = false
+          localStorage.setItem('user', JSON.stringify(payload))
         }
       )
       .addMatcher(
@@ -77,6 +93,12 @@ const userSlice = createSlice({
           state.token = null
           state.isLoggedIn = false
           state.isLoading = false
+        }
+      )
+      .addMatcher(
+        authApi.endpoints.getUser.matchPending,
+        (state, { payload }) => {
+          state.isLoading = true
         }
       )
       .addMatcher(
@@ -96,6 +118,13 @@ const userSlice = createSlice({
           state.isLoggedIn = false
           state.isLoading = false
           localStorage.removeItem('userAuth')
+          localStorage.removeItem('user')
+        }
+      )
+      .addMatcher(
+        authApi.endpoints.getRefreshToken.matchPending,
+        (state, { payload }) => {
+          state.isLoading = true
         }
       )
   }

@@ -4,10 +4,10 @@ import { useState } from 'react'
 
 import UserRegisterForm from '../../components/user/UserRegisterForm'
 import UserLoginForm from '../../components/user/UserLoginForm'
-import styles from './account.module.css'
+import LogInWithGoogle from '../../components/user/LoginWithGoogle'
+import { Feedback } from '../../misc/type'
 
-
-export default function Auth() {
+export default function Auth({ feedback }: { feedback: Feedback }) {
   const [hideLogin, setHideLogin] = useState('')
   const [hideSignUp, setHideSignUp] = useState('hidden')
 
@@ -21,9 +21,9 @@ export default function Auth() {
   }
   return (
     <div className='container mt-10'>
-      <div className={styles.loginPage}>
+      <div className='grid gap-8 w-11/12 md:w-1/2 m-auto'>
         <div className={`grid gap-4 items-center ${hideLogin}`}>
-          <UserLoginForm />
+          <UserLoginForm feedback={feedback} />
           <div className='flex justify-start flex-col items-start'>
             <p>Don’t have an account?</p>
             <button
@@ -36,7 +36,7 @@ export default function Auth() {
           </div>
         </div>
         <div className={`grid gap-4 items-center ${hideSignUp}`}>
-          <UserRegisterForm />
+          <UserRegisterForm feedback={feedback} />
           <div className='flex justify-start flex-col items-start'>
             <p>Already have an account?</p>
             <button
@@ -48,6 +48,7 @@ export default function Auth() {
             </button>
           </div>
         </div>
+        <LogInWithGoogle feedback={feedback} />
       </div>
     </div>
   )
