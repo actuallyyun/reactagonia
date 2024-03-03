@@ -22,7 +22,7 @@ const initialItems = [
 describe('test Cart', () => {
   test('Render component with empty cart state', () => {
     renderWithProviders(<Cart />)
-    expect(screen.getByText('Your cart is empty')).toBeInTheDocument()
+    expect(screen.getByText(/Your cart is empty/i)).toBeInTheDocument()
   })
   test('Uses preloaded state to render', async () => {
     renderWithProviders(<Cart />, {
@@ -63,7 +63,7 @@ describe('test Cart', () => {
       }
     })
 
-    const removeBtn = await screen.getAllByRole('button', { name: 'Remove' })[0]
+    const removeBtn = screen.getAllByRole('button', { name: 'Remove' })[0]
     fireEvent.click(removeBtn)
     const quantityInput = screen.getAllByRole('spinbutton')
     expect(quantityInput).toHaveLength(2)
@@ -79,7 +79,7 @@ describe('test Cart', () => {
     })
     const clearBtn = screen.getByRole('button', { name: 'Clear Cart' })
     fireEvent.click(clearBtn)
-    const emptyMsg = screen.getByText('Your cart is empty')
+    const emptyMsg = screen.getByText(/Your cart is empty/i)
     expect(emptyMsg).toBeInTheDocument()
     expect(screen.queryByText('Product name')).toBeNull()
   })

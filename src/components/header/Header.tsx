@@ -54,7 +54,12 @@ export default function Nav() {
   }
 
   return (
-    <Navbar fluid rounded className='z-50 pt-6  dark:bg-black'>
+    <Navbar
+      fluid
+      rounded
+      className='z-50 pt-6  dark:bg-black'
+      role='navigation'
+    >
       <Navbar.Collapse>
         <Navbar.Link className='text-xl dark:text-white'>
           <button onClick={() => setOpenModal(true)}>Shop</button>
@@ -63,7 +68,12 @@ export default function Nav() {
           All
         </Navbar.Link>
       </Navbar.Collapse>
-      <Navbar.Brand href='/' className='flex gap-4'>
+      <Navbar.Brand
+        href='/'
+        className='flex gap-4'
+        role='navigation'
+        aria-describedby='home page'
+      >
         <FaCat className='fill-purple-500' size={28} />
         <h2 className='text-black dark:text-white'>Catagonia</h2>
       </Navbar.Brand>
@@ -81,10 +91,11 @@ export default function Nav() {
         </a>
         {!isLoggedIn && (
           <a
+            id='account'
             href='/account'
             className='flex flex-col justify-center dark:text-white'
           >
-            <FaRegUser size={22} />
+            <FaRegUser size={22} title='account' />
           </a>
         )}
         {isLoggedIn && (
@@ -99,7 +110,9 @@ export default function Nav() {
                 {user?.email}
               </span>
             </Dropdown.Header>
-            <Dropdown.Item href='/account'>Account</Dropdown.Item>
+            <Dropdown.Item href='/account' aria-describedby='account'>
+              Account
+            </Dropdown.Item>
             <Dropdown.Divider />
             <Dropdown.Item onClick={handleLogOut}>Sign out</Dropdown.Item>
           </Dropdown>

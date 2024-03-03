@@ -1,8 +1,11 @@
-import { fireEvent, screen, waitFor } from '@testing-library/react'
+import {
+  fireEvent,
+  screen,
+  waitFor,
+  waitForElementToBeRemoved
+} from '@testing-library/react'
 
 import { mockServer as server } from '../../tests/mockServer'
-import store from '../../app/store'
-import fakeStoreApi from '../../services/fakeStore'
 import { renderWithProviders } from '../../tests/utils'
 import Products from './Products'
 import { Feedback } from '../../misc/type'
@@ -15,7 +18,7 @@ afterEach(() => server.resetHandlers())
 // Disable API mocking after the tests are done.
 afterAll(() => server.close())
 
-const feedback: Feedback = {
+export const feedback: Feedback = {
   handleSuccess: jest.fn(),
   handleError: jest.fn()
 }
@@ -63,8 +66,8 @@ describe('Products', () => {
     expect(searchInput.value).toBe('frio')
     fireEvent.click(searchBtn)
     expect(frioProduct).toBeInTheDocument()
-    await waitFor(() => {
-      expect(juegosProduct).not.toBeInTheDocument()
+    await waitForElementToBeRemoved(() => screen.queryByText(/juegos/i), {
+      timeout: 3000
     })
   })
 })

@@ -188,7 +188,7 @@ const mockProductsPaged = [
   }
 ]
 
-const mockCategories = [
+export const mockCategories = [
   {
     id: 1,
     name: 'Clothes',
