@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 
-import { AppState } from '../app/store'
+import { AppState } from '../../app/store'
 
 type Prop = {
   children: JSX.Element

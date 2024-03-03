@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useGetAllProductsQuery } from '../../services/fakeStore'
 import { Feedback, Product } from '../../misc/type'
 import ProductCard from '../../components/product/ProductCard'
-import { PaginationNav } from '../../components/tailwindComponents/Pagination'
+import { PaginationNav } from '../../components/common/Pagination'
 import SearchProduct from '../../components/product/SearchProduct'
 import { QueryParams } from '../../misc/type'
 

@@ -13,7 +13,7 @@ import AddToCart from '../../components/cart/AddToCart'
 import { AppState } from '../../app/store'
 import UpdateProductForm from '../../components/product/UpdateProductForm'
 import { isAdmin } from '../../components/user/userSlice'
-import CustomBreadcrumb from '../../components/tailwindComponents/CustomBreadcrumb'
+import CustomBreadcrumb from '../../components/common/CustomBreadcrumb'
 import { Feedback } from '../../misc/type'
 
 const RemoveProduct = ({
