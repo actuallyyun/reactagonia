@@ -49,7 +49,8 @@ Includes `Button`, `Input`, `Spinner`, `Modal`, `ErrorBoundary`, `ErrorFallback`
 - provide feedback when user login, register, logout
 - animation and transiton
 Home page category cards have hover effect.
+- Provide global level feedback handligng.
 
-### TODO
+### Additonal features
 - scroll to top
 When user scrolls down, a button appears to scroll to top.

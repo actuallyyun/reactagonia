@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import Home from './pages/home/Home'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { useSnackbar } from 'notistack'
+import ScrollToTop from 'react-scroll-to-top'
 
 import Profile from './pages/account/Profile'
 import Cart from './pages/cart/Cart'
@@ -94,6 +95,7 @@ function App() {
               ></Route>
               <Route path='/cart' element={<Cart />}></Route>
             </Routes>
+            <ScrollToTop smooth />
           </div>
         </div>
       </div>
