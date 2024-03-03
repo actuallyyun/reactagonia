@@ -21,7 +21,7 @@ export default function Profile({ feedback }: { feedback: Feedback }) {
         <h3 className='text-center'>Account</h3>
         <div className='grid md:grid-cols-2 gap-4 '>
           <div className='bg-gray-200 rounded-lg py-12 px-8 grid gap-4'>
-            <h4>Profile</h4>
+            <h4 className='dark:text-gray-800'>Profile</h4>
             {currentUser && (
               <div className='grid gap-4 '>
                 <p className='text-gray-400'>

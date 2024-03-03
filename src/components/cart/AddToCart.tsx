@@ -27,8 +27,8 @@ export function CartModal({ openModal, setOpenModal }: ModalProps) {
             <Table hoverable className=''>
               <Table.Head>
                 <Table.HeadCell>Product </Table.HeadCell>
-                <Table.HeadCell>Price</Table.HeadCell>
                 <Table.HeadCell>Quantity</Table.HeadCell>
+                <Table.HeadCell>Price</Table.HeadCell>
               </Table.Head>
               <Table.Body>
                 {items &&
@@ -61,8 +61,8 @@ export const CartItemCard = ({ item }: CartItemProp) => {
         <Table.Cell className='whitespace-nowrap font-medium text-gray-900 dark:text-white'>
           {data?.title}
         </Table.Cell>
-        <Table.Cell>${item?.quantity}</Table.Cell>
-        <Table.Cell>{data?.price}</Table.Cell>
+        <Table.Cell>{item?.quantity}</Table.Cell>
+        <Table.Cell>${data?.price}</Table.Cell>
       </Table.Row>
     </>
   )

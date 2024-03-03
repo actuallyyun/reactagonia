@@ -62,16 +62,22 @@ export default function CreateProductForm({
     }
   }
   return (
-    <div className='bg-gray-200 rounded-lg py-12 px-8 grid gap-4'>
-      <h4>Create a new product</h4>
+    <div className='bg-gray-200 rounded-lg py-12 px-8 grid gap-4 dark:text-gray-900'>
+      <h4 className='dark:text-gray-800'>Create a new product</h4>
       <form onSubmit={handleSubmit(onSubmit)} className='grid gap-4 py-12'>
-        <label htmlFor='title'>Title</label>
+        <label htmlFor='title' className='dark:text-gray-800'>
+          Title
+        </label>
         <input {...register('title')} />
         {errors.title ? <div>{errors.title.message}</div> : null}
-        <label htmlFor='price'>Price</label>
+        <label htmlFor='price' className='dark:text-gray-800'>
+          Price
+        </label>
         <input {...register('price')} />
         {errors.price ? <div>{errors.price.message}</div> : null}
-        <label htmlFor='categoryId'>Choose a category</label>
+        <label htmlFor='categoryId' className='dark:text-gray-800'>
+          Choose a category
+        </label>
         <select {...register('categoryId')}>
           {categories &&
             categories.map((cat) => {
@@ -79,7 +85,9 @@ export default function CreateProductForm({
             })}
         </select>
         {errors.categoryId ? <div>{errors.categoryId.message}</div> : null}
-        <label htmlFor='description'>Add a description</label>
+        <label htmlFor='description' className='dark:text-gray-800'>
+          Add a description
+        </label>
         <textarea {...register('description')} />
         {errors.description ? <div>{errors.description.message}</div> : null}
         <Button type='submit' color='dark' size='lg' pill>
