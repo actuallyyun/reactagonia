@@ -16,8 +16,9 @@ export default function CategoryList() {
             <Link
               to={`/shop/${c.id}`}
               target='_blank'
-              aria-describedby={c.name}
               key={c.name}
+              aria-label={c.name}
+              role='link'
             >
               <CategoryCard category={c} />
             </Link>

@@ -1,11 +1,8 @@
 import userReducer from './userSlice'
 import { InitialState, setCredentials, logOut } from './userSlice'
-import { renderWithProviders } from '../../tests/utils'
-import Profile from '../../pages/account/Profile'
-import App from '../../App'
-import { UserAuthToken, UserInfo, UserLoginRequest } from '../../misc/type'
+
 import { authApi } from '../../services/auth'
-import store, { AppState } from '../../app/store'
+import store from '../../app/store'
 import {
   mockAuthToken,
   userLoginRequest,
@@ -17,7 +14,7 @@ import { mockServer as server } from '../../tests/mockServer'
 const initialState: InitialState = {
   user: null,
   token: null,
-  isLoading: true,
+  isLoading: false,
   isLoggedIn: false
 }
 

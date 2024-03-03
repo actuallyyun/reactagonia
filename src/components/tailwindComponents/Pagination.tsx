@@ -10,7 +10,6 @@ type Props = {
 
 export function PaginationNav({ setQuery }: Props) {
   const [page, setPage] = useState<number>(1)
-  console.log({ page })
 
   const onPageChange = (page: number) => {
     setPage(page)
