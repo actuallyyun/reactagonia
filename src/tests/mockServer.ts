@@ -7,7 +7,8 @@ import {
   UserAuthToken,
   UserLoginRequest,
   UserInfo,
-  QueryParams
+  QueryParams,
+  UpdateProductRequest
 } from '../misc/type'
 import { urlParser } from '../misc/utils'
 
@@ -96,7 +97,7 @@ export const mockProducts: Product[] = [
   }
 ]
 
-const mockProductsPaged = [
+export const mockProductsPaged = [
   {
     id: 255,
     title: 'de',
@@ -211,32 +212,94 @@ export const handler = [
     'https://api.escuelajs.co/api/v1/products',
     ({ request, params }) => {
       const url = request.url
+      if (
+        url.includes('title') &&
+        url.includes('offset') &&
+        url.includes('limit')
+      ) {
+        const title = urlParser(url)['title'].toLowerCase()
+        const offset = parseInt(urlParser(url)['offset'])
+        const limit = parseInt(urlParser(url)['limit'])
+        const begin = offset * limit
+        const end = begin + limit
+        const res = mockProductsPaged
+          .filter((p) => p.title.toLowerCase().includes(title))
+          .slice(begin, end)
+        return HttpResponse.json(res)
+      }
       if (url.includes('title')) {
-        const title = urlParser(url)['title']
+        const title = urlParser(url)['title'].toLowerCase()
         return HttpResponse.json(
-          mockProductsPaged.filter((p) => p.title.includes(title))
+          mockProductsPaged.filter((p) => p.title.toLowerCase().includes(title))
         )
+      }
+      if (url.includes('offset') && url.includes('limit')) {
+        const offset = parseInt(urlParser(url)['offset'])
+        const limit = parseInt(urlParser(url)['limit'])
+
+        const begin = offset * limit
+        const end = begin + limit
+        const res = mockProductsPaged.slice(begin, end)
+        return HttpResponse.json(res)
       }
 
       return HttpResponse.json(mockProductsPaged, { status: 200 })
     }
   ),
-
-  http.get('https://api.escuelajs.co/api/v1/categories', () => {
-    return HttpResponse.json(mockCategories)
-  }),
-  http.get(
-    'https://api.escuelajs.co/api/v1/products/:id',
-    ({ request, params }) => {
-      const productId = Number(params.id)
-      if (productId) {
-        const product = mockProducts.find((_p) => _p.id === productId)
-        return HttpResponse.json(product)
-      } else {
-        return new HttpResponse(null, { status: 404 })
+    http.put(
+      'https://api.escuelajs.co/api/v1/products/:id',
+      async ({ request, params }) => {
+        const id = Number(params.id)
+        const body = (await request.json()) as UpdateProductRequest
+        const index = mockProducts.findIndex((_p) => _p.id === id)
+        if (index !== -1) {
+          const updatedProd = {
+            ...mockProducts[index],
+            title: body.title,
+            price: body.price
+          }
+          mockProducts.splice(index, 1, updatedProd)
+          return HttpResponse.json(mockProducts.find((p) => p.id === id))
+        } else {
+          return HttpResponse.json(null, { status: 404 })
+        }
       }
-    }
-  ),
+    ),
+    http.delete(
+      'https://api.escuelajs.co/api/v1/products/:id',
+      ({ request, params }) => {
+        const id = Number(params.id)
+        const index = mockProducts.findIndex((_p) => _p.id === id)
+        if (index !== -1) {
+          mockProducts.splice(index, 1)
+          return HttpResponse.json(true)
+        } else {
+          return new HttpResponse(null, { status: 404 })
+        }
+      }
+    ),
+    http.post(
+      'https://api.escuelajs.co/api/v1/products',
+      async ({ request, params }) => {
+        const body = await request.json()
+        return HttpResponse.json(body)
+      }
+    ),
+    http.get('https://api.escuelajs.co/api/v1/categories', () => {
+      return HttpResponse.json(mockCategories)
+    }),
+    http.get(
+      'https://api.escuelajs.co/api/v1/products/:id',
+      ({ request, params }) => {
+        const productId = parseInt(params.id)
+        if (productId) {
+          const product = mockProducts.find((_p) => _p.id === productId)
+          return HttpResponse.json(product)
+        } else {
+          return new HttpResponse(null, { status: 404 })
+        }
+      }
+    ),
   http.post(
     'https://api.escuelajs.co/api/v1/auth/login',
     async ({ request }) => {

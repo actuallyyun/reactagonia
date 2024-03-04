@@ -3,7 +3,8 @@ import {
   Category,
   Product,
   UpdateProductRequest,
-  QueryParams
+  QueryParams,
+  CreateProductRequest
 } from '../misc/type'
 import { constructQueryUrl } from '../misc/utils'
 
@@ -44,7 +45,7 @@ const productApi = createApi({
       }),
       invalidatesTags: (result, error, arg) => [{ type: 'Product', id: arg }]
     }),
-    createProduct: builder.mutation<Product, Partial<Product>>({
+    createProduct: builder.mutation<Product, CreateProductRequest>({
       query: (product) => ({
         url: '/products/',
         method: 'POST',

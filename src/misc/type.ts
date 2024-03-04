@@ -88,6 +88,7 @@ export type QueryFilters =
     type: QueryFilters
     value: string
   }
+  
   export type QueryParams = QueryParam[]
 
 
