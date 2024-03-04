@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-import { useGetCategoriesQuery } from '../../services/fakeStore'
+import { useGetCategoriesQuery } from '../../services/product'
 import CategoryCard from './CategoryCard'
 import styles from './category.module.css'
 

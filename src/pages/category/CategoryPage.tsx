@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom'
 
-import { useGetProductsByCategoryQuery } from '../../services/fakeStore'
+import { useGetProductsByCategoryQuery } from '../../services/product'
 import ProductCard from '../../components/product/ProductCard'
 import SortByPrice from '../../components/category/SortByPrice'
 import { useSelector } from 'react-redux'

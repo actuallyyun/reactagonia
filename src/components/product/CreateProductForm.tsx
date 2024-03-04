@@ -8,7 +8,7 @@ import { CreateProductInput, Feedback } from '../../misc/type'
 import {
   useGetCategoriesQuery,
   useCreateProductMutation
-} from '../../services/fakeStore'
+} from '../../services/product'
 import { useSelector } from 'react-redux'
 import { selectAllCategories } from '../category/categorySlice'
 

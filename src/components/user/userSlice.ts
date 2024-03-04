@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { UserAuthToken, User, UserInfo } from '../../misc/type'
 import { AppState } from '../../app/store'
-import { authApi } from '../../services/auth'
+import authApi from '../../services/auth'
 
 const userAuthInStorage = localStorage.getItem('userAuth')
 const userAuthToken = userAuthInStorage ? JSON.parse(userAuthInStorage) : null

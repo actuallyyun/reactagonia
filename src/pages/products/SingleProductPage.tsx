@@ -1,14 +1,12 @@
 import { useParams } from 'react-router-dom'
-import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { Carousel, Button } from 'flowbite-react'
-import { useState, useEffect } from 'react'
 
 import {
   useGetSingleProductQuery,
   useDeleteProductMutation
-} from '../../services/fakeStore'
+} from '../../services/product'
 import AddToCart from '../../components/cart/AddToCart'
 import { AppState } from '../../app/store'
 import UpdateProductForm from '../../components/product/UpdateProductForm'

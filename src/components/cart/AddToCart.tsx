@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { useSelector } from 'react-redux'
 
 import { addItem, selectAllItems } from './cartSlice'
-import { useGetSingleProductQuery } from '../../services/fakeStore'
+import { useGetSingleProductQuery } from '../../services/product'
 import { CartItemProp } from '../../pages/cart/Cart'
 
 type Props = {

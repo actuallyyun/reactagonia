@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { useGetAllProductsQuery } from '../../services/fakeStore'
+import { useGetAllProductsQuery } from '../../services/product'
 import { Feedback, Product } from '../../misc/type'
 import ProductCard from '../../components/product/ProductCard'
 import { PaginationNav } from '../../components/common/Pagination'

@@ -3,13 +3,12 @@ import {
   Category,
   Product,
   UpdateProductRequest,
-  QueryFilters,
   QueryParams
 } from '../misc/type'
 import { constructQueryUrl } from '../misc/utils'
 
-const fakeStoreApi = createApi({
-  reducerPath: 'fakeStoreApi',
+const productApi = createApi({
+  reducerPath: 'productApi',
   baseQuery: fetchBaseQuery({ baseUrl: 'https://api.escuelajs.co/api/v1' }),
   tagTypes: ['Products', 'Product', 'Category'],
   endpoints: (builder) => ({
@@ -96,5 +95,5 @@ export const {
   useCreateProductMutation,
   useGetCategoriesQuery,
   useGetProductsByCategoryQuery
-} = fakeStoreApi
-export default fakeStoreApi
+} = productApi
+export default productApi

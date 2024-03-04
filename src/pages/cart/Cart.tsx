@@ -2,12 +2,12 @@ import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { ChangeEvent, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { Table, Button } from 'flowbite-react'
+import { Table } from 'flowbite-react'
 
 import ClearCart from '../../components/cart/ClearCart'
 import { selectAllItems, updateQuantity } from '../../components/cart/cartSlice'
 import { CartItem } from '../../misc/type'
-import { useGetSingleProductQuery } from '../../services/fakeStore'
+import { useGetSingleProductQuery } from '../../services/product'
 import { removeItem } from '../../components/cart/cartSlice'
 
 export type CartItemProp = {

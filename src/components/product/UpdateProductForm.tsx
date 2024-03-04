@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { Button } from 'flowbite-react'
 
 import { Feedback, Product, UpdateProductInput } from '../../misc/type'
-import { useUpdateProductMutation } from '../../services/fakeStore'
+import { useUpdateProductMutation } from '../../services/product'
 import { isAdmin } from '../user/userSlice'
 
 type UpdateProductFormProp = {

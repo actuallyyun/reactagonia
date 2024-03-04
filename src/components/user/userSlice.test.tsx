@@ -1,7 +1,7 @@
 import userReducer from './userSlice'
 import { InitialState, setCredentials, logOut } from './userSlice'
 
-import { authApi } from '../../services/auth'
+import authApi from '../../services/auth'
 import store from '../../app/store'
 import {
   mockAuthToken,

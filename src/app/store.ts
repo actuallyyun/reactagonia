@@ -1,17 +1,17 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
 import { useDispatch } from 'react-redux'
 
-import fakeStoreApi from '../services/fakeStore'
+import productApi from '../services/product'
 import { categoryReducer } from '../components/category/categorySlice'
 import userReducer from '../components/user/userSlice'
-import { authApi } from '../services/auth'
+import authApi from '../services/auth'
 import cartReducer from '../components/cart/cartSlice'
 
 const rootReducer = combineReducers({
   category: categoryReducer,
   user: userReducer,
   cart: cartReducer,
-  [fakeStoreApi.reducerPath]: fakeStoreApi.reducer,
+  [productApi.reducerPath]: productApi.reducer,
   [authApi.reducerPath]: authApi.reducer
 })
 
@@ -20,7 +20,7 @@ export const setupStore = (preloadedState?: Partial<RootState>) => {
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware()
-        .concat(fakeStoreApi.middleware)
+        .concat(productApi.middleware)
         .concat(authApi.middleware),
     preloadedState
   })

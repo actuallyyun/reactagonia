@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Category } from '../../misc/type'
-import fakeStoreApi from '../../services/fakeStore'
+import fakeStoreApi from '../../services/product'
 import { AppState } from '../../app/store'
 
 export type InitialState = {

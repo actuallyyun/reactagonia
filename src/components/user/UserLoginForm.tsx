@@ -2,7 +2,7 @@ import * as Yup from 'yup'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 
-import { authApi, useLoginMutation } from '../../services/auth'
+import authApi, { useLoginMutation } from '../../services/auth'
 import { Label, TextInput, Button } from 'flowbite-react'
 import store from '../../app/store'
 import { Feedback } from '../../misc/type'
