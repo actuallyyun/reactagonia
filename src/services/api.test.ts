@@ -25,9 +25,11 @@ describe('getAllProducts endpoint', () => {
     expect(payload).toMatchObject(mockProductsPaged)
   })
   test('with pagination params should return paged result', async () => {
+    const offset: QueryFilters = 'offset'
+    const limit: QueryFilters = 'limit'
     const param = [
-      { type: 'offset', value: '1' },
-      { type: 'limit', value: '2' }
+      { type: offset, value: '1' },
+      { type: limit, value: '2' }
     ]
     const payload = await store
       .dispatch(productApi.endpoints.getAllProducts.initiate(param))
@@ -70,7 +72,8 @@ describe('getSingleProduct', () => {
     const payload = await store
       .dispatch(productApi.endpoints.getSingleProduct.initiate(2))
       .unwrap()
-    expect(payload).toMatchObject(mockProducts.find((p) => p.id === 2))
+
+    expect(payload).toMatchObject(mockProducts[1])
   })
   test('return null if not found', async () => {
     const payload = await store

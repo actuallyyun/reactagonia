@@ -218,8 +218,8 @@ export const handler = [
         url.includes('limit')
       ) {
         const title = urlParser(url)['title'].toLowerCase()
-        const offset = parseInt(urlParser(url)['offset'])
-        const limit = parseInt(urlParser(url)['limit'])
+        const offset = Number(urlParser(url)['offset'])
+        const limit = Number(urlParser(url)['limit'])
         const begin = offset * limit
         const end = begin + limit
         const res = mockProductsPaged
@@ -291,7 +291,7 @@ export const handler = [
     http.get(
       'https://api.escuelajs.co/api/v1/products/:id',
       ({ request, params }) => {
-        const productId = parseInt(params.id)
+        const productId = Number(params.id)
         if (productId) {
           const product = mockProducts.find((_p) => _p.id === productId)
           return HttpResponse.json(product)
