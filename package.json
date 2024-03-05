@@ -36,7 +36,7 @@
   "scripts": {
     "start": "yarn run build:css && react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!@codemirror)/'",
+    "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!@codemirror)/' --coverage --watchAll",
     "eject": "react-scripts eject",
     "build:css": "postcss src/styles/global.css -o src/styles/index.css "
   },
