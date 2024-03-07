@@ -53,6 +53,7 @@ const productApi = createApi({
       }),
       invalidatesTags: [{ type: 'Products' }]
     }),
+
     getCategories: builder.query<Category[], void>({
       query: () => ({ url: '/categories', method: 'GET' }),
       transformResponse: (response: Category[], meta, arg) =>

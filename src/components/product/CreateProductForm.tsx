@@ -3,16 +3,18 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useNavigate } from 'react-router-dom'
 import { Button } from 'flowbite-react'
+import { useState } from 'react'
 
 import { CreateProductInput, Feedback } from '../../misc/type'
 import {
   useGetCategoriesQuery,
   useCreateProductMutation
 } from '../../services/product'
+import { useUploadFileMutation } from '../../services/file'
 import { useSelector } from 'react-redux'
 import { selectAllCategories } from '../category/categorySlice'
 
-const defaultImage = ['https://placeimg.com/640/480/any']
+const defaultImage = ['https://picsum.photos/id/237/400/600']
 
 const createProductSchema = Yup.object().shape({
   title: Yup.string()
@@ -34,9 +36,15 @@ export default function CreateProductForm({
 }) {
   useGetCategoriesQuery()
   const categories = useSelector(selectAllCategories)
+  const [file, setFile] = useState<null | File>(null)
 
+  const handleUploadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const uploadedFile = event.target.files ? event.target.files[0] : null
+    setFile((prev) => (prev = uploadedFile))
+  }
   const navigate = useNavigate()
   const [creatProduct] = useCreateProductMutation()
+  const [uploadFile] = useUploadFileMutation()
 
   const {
     register,
@@ -47,10 +55,19 @@ export default function CreateProductForm({
   })
   const onSubmit = async (data: CreateProductInput) => {
     try {
-      const payload = await creatProduct({
-        ...data,
-        images: defaultImage
-      }).unwrap()
+      let images: string[] = []
+
+      if (file) {
+        try {
+          const fileResponse = await uploadFile(file).unwrap()
+          images.push(fileResponse.location)
+        } catch (error) {
+          feedback.handleError('File upload failed. We will find you a image.')
+          images = [...defaultImage]
+        }
+      }
+
+      const payload = await creatProduct({ ...data, images: images }).unwrap()
       if (payload) {
         feedback.handleSuccess('Product created successfully.')
         setTimeout(() => navigate(`/product/${payload.id}`), 2000)
@@ -81,7 +98,11 @@ export default function CreateProductForm({
         <select {...register('categoryId')}>
           {categories &&
             categories.map((cat) => {
-              return <option value={cat.id}>{cat.name}</option>
+              return (
+                <option value={cat.id} key={cat.id}>
+                  {cat.name}
+                </option>
+              )
             })}
         </select>
         {errors.categoryId ? <div>{errors.categoryId.message}</div> : null}
@@ -90,6 +111,7 @@ export default function CreateProductForm({
         </label>
         <textarea {...register('description')} />
         {errors.description ? <div>{errors.description.message}</div> : null}
+        <input type='file' onChange={handleUploadFile} />
         <Button type='submit' color='dark' size='lg' pill>
           Create
         </Button>

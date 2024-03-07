@@ -6,22 +6,26 @@ import { categoryReducer } from '../components/category/categorySlice'
 import userReducer from '../components/user/userSlice'
 import authApi from '../services/auth'
 import cartReducer from '../components/cart/cartSlice'
+import fileApi from '../services/file'
 
 const rootReducer = combineReducers({
   category: categoryReducer,
   user: userReducer,
   cart: cartReducer,
   [productApi.reducerPath]: productApi.reducer,
-  [authApi.reducerPath]: authApi.reducer
+  [authApi.reducerPath]: authApi.reducer,
+  [fileApi.reducerPath]: fileApi.reducer
 })
 
 export const setupStore = (preloadedState?: Partial<RootState>) => {
   return configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware()
-        .concat(productApi.middleware)
-        .concat(authApi.middleware),
+      getDefaultMiddleware().concat(
+        productApi.middleware,
+        authApi.middleware,
+        fileApi.middleware
+      ),
     preloadedState
   })
 }

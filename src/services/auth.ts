@@ -10,6 +10,7 @@ import {
 } from '../misc/type'
 
  const authApi = createApi({
+   reducerPath: 'authApi',
    baseQuery: fetchBaseQuery({
      baseUrl: 'https://api.escuelajs.co/api/v1',
      prepareHeaders: (headers, { getState }) => {

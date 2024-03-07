@@ -109,3 +109,11 @@ export type QueryFilters =
     handleError: (err: any) => void
     handleSuccess: (message: string) => void
   }
+
+
+  export type FileResponse = {
+    originalname: string
+    filename: string
+    location: string
+  }
+
