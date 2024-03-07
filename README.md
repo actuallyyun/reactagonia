@@ -3,6 +3,8 @@ This project is a frontend e-commerce application using the [fake store api](htt
 
 You can find it live here: **[Catagonia](https://fs17-frontend-project-mauve.vercel.app/)**
 
+![Catagonia](./public/catagonia.png)
+
 This project is meant for practing and learning purposes. 
 
 ### Technologies:
@@ -27,7 +29,7 @@ This project is meant for practing and learning purposes.
 ### Installation
 1. Clone the repository
 ```bash
-git clone xx
+git clone git@github.com:actuallyyun/frontend-project.git
 ```
 2. Install dependencies
 
@@ -74,6 +76,7 @@ Reusable test utilities and custom render functions are stored here.
 ### User auth data flow
 
 ```mermaid
+flowchart TD
 
     A[Account] -->B{Is logged? }
     B -->|Yes| C(Profile page)
@@ -97,6 +100,7 @@ Reusable test utilities and custom render functions are stored here.
 ### useContext theme data flow
 
 ```mermaid
+flowchart TD
     A[App loads] --> |on render|B(retrieve data from local storage)
     A-->|on user click|D(set to the non-current value)
     B --> |is data|C(set theme to data in storage)
@@ -152,7 +156,7 @@ yarn test
 ```
 1. Unit testing for RTK queries
 
-![RTK Query tests](./public/rtkQuery%20test.png)
+![RTK Query tests](./public/rtkquery%20test.png)
 *auth and product api tests 91-92% coverage*
 
 2. Unite testing for reducers
