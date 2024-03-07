@@ -3,9 +3,13 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useNavigate } from 'react-router-dom'
 import { Label, TextInput, Button } from 'flowbite-react'
+import { useState } from 'react'
 
-import { Feedback, UserRegister } from '../../misc/type'
+import { Feedback, UserTextInput } from '../../misc/type'
 import { useRegisterMutation } from '../../services/auth'
+import { useUploadFileMutation } from '../../services/file'
+
+const defaultImage = 'https://picsum.photos/id/237/200/200'
 
 const SignupSchema = Yup.object().shape({
   name: Yup.string()
@@ -16,17 +20,20 @@ const SignupSchema = Yup.object().shape({
   password: Yup.string()
     .min(6, 'Must be at least 6 characters')
     .max(16, 'Must be shorter than 16 characters')
-    .required('Required'),
-  avatar: Yup.string()
-    .url()
     .required('Required')
-    .default('https://picsum.photos/800')
 })
 
 const UserRegisterForm = ({ feedback }: { feedback: Feedback }) => {
   const nagivate = useNavigate()
   const [addUser] = useRegisterMutation()
   const { handleError, handleSuccess } = feedback
+  const [uploadFile] = useUploadFileMutation()
+  const [file, setFile] = useState<File | null>(null)
+
+  const handleUploadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const uploadedFile = event.target.files ? event.target.files[0] : null
+    setFile((prev) => (prev = uploadedFile))
+  }
 
   const {
     register,
@@ -35,12 +42,23 @@ const UserRegisterForm = ({ feedback }: { feedback: Feedback }) => {
   } = useForm({
     resolver: yupResolver(SignupSchema)
   })
-  const onSubmit = async (data: UserRegister) => {
+  const onSubmit = async (data: UserTextInput) => {
+    let avatar: string = ''
+    if (file) {
+      try {
+        const fileResponse = await uploadFile(file).unwrap()
+        avatar = fileResponse.location
+        feedback.handleSuccess('Image uploaded successfully.')
+      } catch (error) {
+        feedback.handleError('File upload failed. We will find you a image.')
+        avatar = defaultImage
+      }
+    }
     try {
-      const payload = await addUser(data).unwrap()
+      const payload = await addUser({ ...data, avatar: avatar }).unwrap()
       if (payload) {
         handleSuccess('Thank you for creating an account!')
-        setTimeout(() => nagivate('/auth'), 3000)
+        setTimeout(() => nagivate('/account'), 2000)
       } else {
         handleError('unkown error')
       }
@@ -93,18 +111,7 @@ const UserRegisterForm = ({ feedback }: { feedback: Feedback }) => {
           }
         />
         <Label htmlFor='avatar' value='avatar' />
-        <TextInput
-          {...register('avatar')}
-          placeholder='avatar'
-          color={errors.avatar ? 'failure' : ''}
-          helperText={
-            <>
-              {errors.avatar && (
-                <span className='font-medium'>{errors.avatar.message}</span>
-              )}
-            </>
-          }
-        />
+        <input onChange={handleUploadFile} type='file' />
         <p>
           Please read our Privacy Notice for how we process your personal data
           and how you can exercise your privacy rights.

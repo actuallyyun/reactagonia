@@ -15,11 +15,15 @@ export default function Profile({ feedback }: { feedback: Feedback }) {
     feedback.handleSuccess('You are logged out.')
   }
 
+  if (!currentUser) {
+    return null
+  }
+
   return (
     <div className='w-11/12 m-auto'>
       <div className='flex flex-col justify-center gap-4 pt-4'>
         <h3 className='text-center'>Account</h3>
-        <div className='grid md:grid-cols-2 gap-4 '>
+        <div className='grid gap-8'>
           <div className='bg-gray-200 rounded-lg py-12 px-8 grid gap-4'>
             <h4 className='dark:text-gray-800'>Profile</h4>
             {currentUser && (
@@ -42,7 +46,9 @@ export default function Profile({ feedback }: { feedback: Feedback }) {
               </div>
             )}
           </div>
-          <CreateProductForm feedback={feedback} />
+          {currentUser.role === 'admin' && (
+            <CreateProductForm feedback={feedback} />
+          )}
         </div>
       </div>
     </div>

@@ -61,6 +61,7 @@ export default function CreateProductForm({
         try {
           const fileResponse = await uploadFile(file).unwrap()
           images.push(fileResponse.location)
+          feedback.handleSuccess('Image uploaded successfully.')
         } catch (error) {
           feedback.handleError('File upload failed. We will find you a image.')
           images = [...defaultImage]

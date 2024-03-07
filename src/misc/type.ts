@@ -28,12 +28,19 @@ export type CreateProductRequest = CreateProductInput & {
   images: string[]
 }
 
+export type UserTextInput = {
+  name: string
+  email: string
+  password: string
+}
+
 export type UserRegister = {
   name: string
   email: string
   password: string
   avatar: string
 }
+
 
 export type User = UserRegister & {
   role: 'customer' | 'admin'
