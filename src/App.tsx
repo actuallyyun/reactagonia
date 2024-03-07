@@ -17,6 +17,7 @@ import Nav from './components/header/Header'
 import Products from './pages/products/Products'
 import { useTheme } from './services/ThemeContext'
 import { isFetchBaseQueryError, isErrorWithMessage } from './services/helpers'
+import Footer from './components/footer/Footer'
 
 function App() {
   const { enqueueSnackbar } = useSnackbar()
@@ -97,6 +98,7 @@ function App() {
             </Routes>
             <ScrollToTop smooth />
           </div>
+          <Footer />
         </div>
       </div>
     </div>
