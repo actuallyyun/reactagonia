@@ -1,13 +1,10 @@
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { Carousel, Button } from 'flowbite-react'
+import { Carousel } from 'flowbite-react'
 import { redirect } from 'react-router-dom'
 
-import {
-  useGetSingleProductQuery,
-  useDeleteProductMutation
-} from '../../services/product'
+import { useGetSingleProductQuery } from '../../services/product'
 import AddToCart from '../../components/cart/AddToCart'
 import { AppState } from '../../app/store'
 import UpdateProductForm from '../../components/product/UpdateProductForm'
@@ -16,61 +13,9 @@ import CustomBreadcrumb from '../../components/common/CustomBreadcrumb'
 import { Feedback } from '../../misc/type'
 import { cleanImageUrl, generateRandomImage } from '../../misc/utils'
 import { useEffect } from 'react'
+import RemoveProduct from './RemoveProduct'
+import ProductCarousel from './ProductCarousel'
 
-const RemoveProduct = ({
-  id,
-  feedback
-}: {
-  id: number
-  feedback: Feedback
-}) => {
-  const [deleteProduct] = useDeleteProductMutation()
-  const handleRemove = async (id: number) => {
-    try {
-      const payload = await deleteProduct(id).unwrap()
-      if (payload) {
-        feedback.handleSuccess('Product delete successfully.')
-      } else {
-        feedback.handleError('Unkown error')
-      }
-    } catch (err) {
-      feedback.handleError(err)
-    }
-  }
-
-  return (
-    <div className='grid gap-4  bg-gray-200 rounded-lg py-12 px-8'>
-      <h4>Remove product</h4>
-      <p>
-        Once the product is removed, you will not be able to access it any more.
-      </p>
-
-      <Button onClick={() => handleRemove(id)} color='warning' pill>
-        Remove
-      </Button>
-    </div>
-  )
-}
-
-function ProductCarousel({ images }: { images: string[] | undefined }) {
-  if (!images) {
-    return null
-  }
-  return (
-    <div className='h-96'>
-      <Carousel>
-        {images &&
-          images.map((img) => {
-            return (
-              <div className='flex h-full items-center justify-center bg-gray-400 dark:bg-gray-700 dark:text-white'>
-                <img src={img} alt='product' key={img} />
-              </div>
-            )
-          })}
-      </Carousel>
-    </div>
-  )
-}
 
 export default function SingleProductPage({
   feedback
