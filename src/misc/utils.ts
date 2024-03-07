@@ -16,9 +16,7 @@ export const cleanImageUrl = (url: string) => {
   if (!url) {
     return null
   }
-  if (!url.includes('r')) {
-    return null
-  }
+
   if (url.slice(0, 5) === 'https') {
     return url
   }

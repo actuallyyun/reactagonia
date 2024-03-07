@@ -13,6 +13,9 @@ export default function ProductCard({ product }: ProductCardProp) {
   const images = product.images.map((img) => {
     return cleanImageUrl(img) ?? generateRandomImage()
   })
+  if (!images) {
+    return null
+  }
 
   return (
     <>

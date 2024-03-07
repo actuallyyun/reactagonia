@@ -19,13 +19,6 @@ describe('clean image url', () => {
       'https://placeimg.com/640/480/any?r=0.591926261873231'
     )
   })
-  test('should return null on no r', () => {
-    const url1 = '["https://placeimg.com/640/480/any"]'
-    expect(cleanImageUrl(url1)).toBe(null)
-    const url2 = 'https://placeimg.com/640/480/any'
-    expect(cleanImageUrl(url2)).toBe(null)
-  })
-
   test('should return null', () => {
     const url1 = ''
     expect(cleanImageUrl(url1)).toBe(null)
