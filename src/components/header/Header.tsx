@@ -44,9 +44,7 @@ const CategoryModal = ({ openModal, setOpenModal }: ModalProps) => {
 
 export default function Nav() {
   const { isLoggedIn, user } = useSelector((state: AppState) => state.user)
-
   const [openModal, setOpenModal] = useState(false)
-
   const dispatch = useDispatch()
 
   const handleLogOut = () => {
@@ -67,6 +65,12 @@ export default function Nav() {
         <Navbar.Link href='/product' className='text-xl dark:text-white'>
           All
         </Navbar.Link>
+        <Navbar.Link
+          href='/cart'
+          className='text-xl dark:text-white flex items-center'
+        >
+          <BsBag size={22} title='cart' />
+        </Navbar.Link>
       </Navbar.Collapse>
       <Navbar.Brand
         href='/'
@@ -79,16 +83,6 @@ export default function Nav() {
       </Navbar.Brand>
 
       <div className='flex md:order-2 gap-8'>
-        <div className='md:hidden dark:text-white flex flex-col justify-center'>
-          <button onClick={() => setOpenModal(true)}>Shop</button>
-          <CategoryModal openModal={openModal} setOpenModal={setOpenModal} />
-        </div>
-        <a
-          href='/cart'
-          className='flex flex-col justify-center dark:text-white'
-        >
-          <BsBag size={22} />
-        </a>
         {!isLoggedIn && (
           <a
             id='account'
@@ -120,6 +114,7 @@ export default function Nav() {
         <ThemeToggle />
       </div>
       <CategoryModal openModal={openModal} setOpenModal={setOpenModal} />
+      <Navbar.Toggle />
     </Navbar>
   )
 }
