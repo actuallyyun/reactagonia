@@ -101,6 +101,7 @@ flowchart TD
 
 ```mermaid
 flowchart TD
+
     A[App loads] --> |on render|B(retrieve data from local storage)
     A-->|on user click|D(set to the non-current value)
     B --> |is data|C(set theme to data in storage)
@@ -112,6 +113,7 @@ flowchart TD
 
 ```mermaid
 classDiagram
+
     Main Components <|-- Category
     Main Components <|-- Product
     Main Components <|-- Cart
