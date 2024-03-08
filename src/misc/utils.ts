@@ -16,12 +16,22 @@ export const cleanImageUrl = (url: string) => {
   if (!url) {
     return null
   }
-
   if (url.slice(0, 5) === 'https') {
     return url
   }
-  if (url.slice(0, 2) === '["') {
+  if (
+    url.slice(0, 2) === '["' &&
+    url.slice(url.length - 2, url.length) === '"]'
+  ) {
     return url.slice(2, url.length - 2)
+  }
+
+  if (url.slice(0, 2) === '["' && url.slice(url.length - 1) === '"') {
+    return url.slice(2, url.length - 1)
+  }
+
+  if (url.slice(0, 1) === '"' && url.slice(url.length - 2) === '"]') {
+    return url.slice(1, url.length - 2)
   }
 
   return null

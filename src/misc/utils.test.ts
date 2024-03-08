@@ -25,6 +25,14 @@ describe('clean image url', () => {
     const url2 = 'somerandomstring'
     expect(cleanImageUrl(url2)).toBe(null)
   })
+  test('pass irregular string should return cleaned url', () => {
+    const url = '["https://i.imgur.com/OKn1KFI.jpeg"'
+    expect(cleanImageUrl(url)).toBe('https://i.imgur.com/OKn1KFI.jpeg')
+  })
+  test('url starts with " and ends with ]"', () => {
+    const url = '"https://i.imgur.com/Z9oKRVJ.jpeg"]'
+    expect(cleanImageUrl(url)).toBe('https://i.imgur.com/Z9oKRVJ.jpeg')
+  })
 })
 
 describe('generate random image', () => {
