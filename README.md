@@ -1,9 +1,9 @@
 ## Introduction
 This project is a frontend e-commerce application using the [fake store api](https://fakeapi.platzi.com/). 
 
-You can find it live here: **[Catagonia](https://fs17-frontend-project-mauve.vercel.app/)**
+You can find it live here: **[Reactagonia](https://reactagonia.vercel.app/)**
 
-![Catagonia](./public/catagonia.png)
+![Reactagonia](./public/catagonia.png)
 
 This project is meant for practing and learning purposes. 
 
