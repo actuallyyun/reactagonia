@@ -1,6 +1,3 @@
-import { Card } from 'flowbite-react'
-import { Link } from 'react-router-dom'
-
 import { Category } from '../../misc/type'
 import styles from './category.module.css'
 
